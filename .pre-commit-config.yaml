@@ -24,7 +24,8 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
-      - id: terraform_tfsec
+      # - id: terraform_tfsec
+      - id: terraform_tflint
       # - id: terraform_checkov
 
   - repo: https://github.com/terraform-docs/terraform-docs

@@ -4,8 +4,8 @@
 resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   count                           = var.vmss_os == "linux" ? 1 : 0
   name                            = var.vmss_name
-  resource_group_name             = data.azurerm_resource_group.rg.name
-  location                        = data.azurerm_resource_group.rg.location
+  resource_group_name             = var.vmss_resource_group_name
+  location                        = var.vmss_location
   sku                             = var.vmss_sku
   instances                       = var.vmss_instances
   encryption_at_host_enabled      = var.vmss_encryption_at_host_enabled
@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
     ip_configuration {
       name      = "${var.vmss_resource_prefix}-ipconfig"
       primary   = true
-      subnet_id = data.azurerm_subnet.subnet.id
+      subnet_id = var.vmss_subnet_id
     }
   }
 
@@ -84,12 +84,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
 # TODO: remove references
 # https://github.com/anandraju/vmss_customscript_ado/blob/main/vmss-creation.tf
 # https://github.com/MicrosoftDocs/azure-docs/issues/10862
-resource "azurerm_virtual_machine_scale_set_extension" "ado_pool" {
-  count                        = var.vmss_se_enabled ? 1 : 0
-  name                         = "vmss_se"
-  virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.ado_pool[0].id
-  publisher                    = "Microsoft.Azure.Extensions"
-  type                         = "CustomScript"
-  type_handler_version         = "2.0"
-  settings                     = local.vmss_se_settings
-}
+# this shoudl be in root module
+# resource "azurerm_virtual_machine_scale_set_extension" "ado_pool" {
+#   count                        = var.vmss_se_enabled ? 1 : 0
+#   name                         = "vmss_se"
+#   virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.ado_pool[0].id
+#   publisher                    = "Microsoft.Azure.Extensions"
+#   type                         = "CustomScript"
+#   type_handler_version         = "2.0"
+#   settings                     = local.vmss_se_settings
+# }

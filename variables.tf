@@ -4,9 +4,9 @@ variable "vmss_resource_group_name" {
   description = "Existing resource group name of where the VMSS will be created"
 }
 
-variable "vmss_subnet_name" {
+variable "vmss_subnet_id" {
   type        = string
-  description = "Existing subnet name of where the VMSS will be connected"
+  description = "Existing subnet ID of where the VMSS will be connected"
 }
 
 variable "vmss_vnet_resource_group_name" {
@@ -20,6 +20,12 @@ variable "vmss_vnet_name" {
 }
 
 # variables with predefined defaults
+
+variable "vmss_location" {
+  type        = string
+  description = "Existing resource group name of where the VMSS will be created"
+  default     = "uksouth"
+}
 
 # needs to be enabled on the subscription, see:
 # Use the Azure CLI to enable end-to-end encryption using encryption at host

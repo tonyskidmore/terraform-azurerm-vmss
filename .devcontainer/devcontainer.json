@@ -9,8 +9,10 @@
 			}
 	},
 	"remoteUser": "vscode",
+	// .pre-commit-<uuid> creates a unique cache directory in $HOME/.pre-commit for each project
+	// specify a new uuid per project e.g. using uuidgen
 	"mounts": [
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.pre-commit,target=/home/vscode/.pre-commit,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.pre-commit-f828ad0b-aa5b-4925-8638-92532900f86c,target=/home/vscode/.pre-commit,type=bind,consistency=cached",
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
 	],
 	"remoteEnv": {
@@ -20,13 +22,9 @@
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
-			// Set *default* container specific settings.json values on container create.
-			// "settings": {
-			// 	"python.defaultInterpreterPath": "/usr/bin/python3"
-			// },
-			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"hashicorp.terraform",
+				"ms-azuretools.vscode-azureterraform",
 				"shardulm94.trailing-spaces",
 				"streetsidesoftware.code-spell-checker",
 				"wwm.better-align"

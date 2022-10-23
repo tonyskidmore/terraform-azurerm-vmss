@@ -7,11 +7,11 @@ locals {
   # https://www.skidmore.co.uk/post/2022_04_20_azure_devops_vmss_agents_part2/#path-issue
   # other scripts can be added to the module and used or base64 content can be passed in via var.vmss_se_settings_data
   # first non-empty value will be returned
-  vmss_se_settings = jsonencode(
-    {
-      "script" : coalesce(var.vmss_se_settings_data, "${filebase64("${path.module}/${var.vmss_se_settings_script}")}")
-    }
-  )
+  # vmss_se_settings = jsonencode(
+  #   {
+  #     "script" : coalesce(var.vmss_se_settings_data, "${filebase64("${path.module}/${var.vmss_se_settings_script}")}")
+  #   }
+  # )
 
   # setting vmss_custom_data_script to "" turns off custom_data, otherwise the first non-empty value will be returned
   # defaulting to the base64 encoded version of fiel pointed to by var.vmss_custom_data_script
