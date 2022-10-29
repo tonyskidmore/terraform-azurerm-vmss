@@ -54,6 +54,11 @@ jobs:
         with:
           tflint_version: latest
 
+      - name: Patch .pre-commit-config.yaml
+        run: |
+          sed -i '/terraform-docs/,+4d' "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+          sed -i '/- id: end-of-file-fixer/d' "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+
       - name: Pre-commit check all files
         run: |
           pre-commit install
