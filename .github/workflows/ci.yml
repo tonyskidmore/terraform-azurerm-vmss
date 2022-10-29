@@ -26,13 +26,14 @@ jobs:
           # of changed files within `super-linter`
           fetch-depth: 0
 
-      - uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           cache: 'pip' # caching pip dependencies
 
-      - name: Install Python packages
-        run: pip install -r dev-requirements.txt
+      # - name: Install Python packages
+      #   run: pip install -r dev-requirements.txt
 
         # https://github.com/marketplace/actions/super-linter
       - name: Lint Code Base
