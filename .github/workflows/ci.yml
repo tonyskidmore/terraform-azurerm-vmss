@@ -10,6 +10,10 @@ on:
       - 'CHANGELOG.md'
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types: [synchronize, closed]
 
 jobs:
   build:
