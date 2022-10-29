@@ -1,4 +1,4 @@
-formatter: "" # this is required
+formatter: "markdown table" # this is required
 
 version: ""
 
@@ -15,32 +15,31 @@ sections:
 
 content: |-
 
-  Any arbitrary text can be placed anywhere in the content
-
   {{ .Header }}
 
-  and even in between sections
+  Azure Virtual Machine Scale Set Terraform module.
 
-  {{ .Providers }}
+   ## Basic example
 
-  and they don't even need to be in the default order
+  ```hcl
 
-  {{ .Outputs }}
+  {{ include "examples/example1/main.tf" }}
 
-  include any relative files
-
-  {{ include "relative/path/to/file" }}
+  ```
+  {{ .Resources }}
 
   {{ .Inputs }}
 
-  # Examples
+  {{ .Outputs }}
 
-  ````hcl
-  {{ include "examples/example1/main.tf" }}
-  ````
+  {{ .Providers }}
+
+  {{ .Footer }}
+
+
 
 output:
-  file: ""
+  file: "README.md"
   mode: inject
   template: |-
     <!-- BEGIN_TF_DOCS -->
