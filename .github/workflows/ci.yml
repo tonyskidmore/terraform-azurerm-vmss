@@ -26,6 +26,11 @@ jobs:
           # of changed files within `super-linter`
           fetch-depth: 0
 
+      - name: Debug
+        run: |
+          pip freeze
+          env
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
