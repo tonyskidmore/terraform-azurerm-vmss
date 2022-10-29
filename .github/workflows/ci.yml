@@ -44,8 +44,13 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Use pre-commit to fix newly generated data files
+      - name: Setup TRLint
+        uses: terraform-linters/setup-tflint@v2
+        with:
+          tflint_version: latest
+
+      - name: Pre-commit all files
         run: |
           pre-commit install
           pre-commit install-hooks
-          pre-commit run --all || pre-commit run --all
+          pre-commit run --all-files
