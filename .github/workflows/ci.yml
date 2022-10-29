@@ -44,7 +44,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup TRLint
+      - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v2
         with:
           tflint_version: latest

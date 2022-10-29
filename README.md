@@ -2,6 +2,12 @@
 
 [![GitHub Super-Linter](https://github.com/tonyskidmore/terraform-azurerm-vmss/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
+Azure Virtual Machine Scale Set Terraform module.
+It is a single resource module, with opinionated defaults
+that form the starting point for the creation of an
+[Azure virtual machine scale set agent][scale-agents]
+pool in Azure DevOps.
+
 <!-- BEGIN_TF_DOCS -->
 
 
