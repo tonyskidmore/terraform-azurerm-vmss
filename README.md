@@ -4,8 +4,10 @@
 
 
 
-Azure Virtual Machine Scale Set Terraform module.  It is a single resource module, with opinionated defaults and forms the starting point
-for the creation of an [Azure virtual machine scale set agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents) pool in Azure DevOps.
+Azure Virtual Machine Scale Set Terraform module.
+It is a single resource module, with opinionated defaults and forms the starting point
+for the creation of an
+[Azure virtual machine scale set agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents) pool in Azure DevOps.
 
 ## Basic example
 
