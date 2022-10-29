@@ -15,6 +15,6 @@ locals {
 
   # setting vmss_custom_data_script to "" turns off custom_data, otherwise the first non-empty value will be returned
   # defaulting to the base64 encoded version of fiel pointed to by var.vmss_custom_data_script
-  vmss_custom_data = var.vmss_custom_data_script == "" ? null : coalesce(var.vmss_custom_data_data, "${filebase64("${path.module}/${var.vmss_custom_data_script}")}")
+  # vmss_custom_data = var.vmss_custom_data_script == "" ? null : try(coalesce(var.vmss_custom_data_data, var.vmss_custom_data_script), null)
 
 }

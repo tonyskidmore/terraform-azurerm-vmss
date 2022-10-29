@@ -14,7 +14,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   disable_password_authentication = local.disable_password_authentication
   source_image_id                 = var.vmss_source_image_id
   tags                            = var.tags
-  custom_data                     = local.vmss_custom_data
+  custom_data                     = var.vmss_custom_data
   zones                           = var.vmss_zones
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
   overprovision = false

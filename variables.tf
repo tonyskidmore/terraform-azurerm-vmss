@@ -9,15 +9,15 @@ variable "vmss_subnet_id" {
   description = "Existing subnet ID of where the VMSS will be connected"
 }
 
-variable "vmss_vnet_resource_group_name" {
-  type        = string
-  description = "Existing resource group where the Vnet containing the subnet is located"
-}
+# variable "vmss_vnet_resource_group_name" {
+#   type        = string
+#   description = "Existing resource group where the Vnet containing the subnet is located"
+# }
 
-variable "vmss_vnet_name" {
-  type        = string
-  description = "Existing Vnet name where the subnet is located"
-}
+# variable "vmss_vnet_name" {
+#   type        = string
+#   description = "Existing Vnet name where the subnet is located"
+# }
 
 # variables with predefined defaults
 
@@ -123,7 +123,7 @@ variable "vmss_storage_account_uri" {
 variable "vmss_os_disk_caching" {
   type        = string
   description = "The Type of Caching which should be used for the Internal OS Disk"
-  default     = "ReadWrite"
+  default     = "ReadOnly"
 
   validation {
     condition     = contains(["None", "ReadOnly", "ReadWrite"], var.vmss_os_disk_caching)
@@ -154,13 +154,14 @@ variable "vmss_resource_prefix" {
   default     = "vmss"
 }
 
-variable "vmss_custom_data_script" {
-  type        = string
-  description = "The path of the file to use as custom data for the VMSS instances"
-  default     = "scripts/cloud-init/cloud-init"
-}
+# variable "vmss_custom_data_script" {
+#   type        = string
+#   description = "The path of the file to use as custom data for the VMSS instances"
+#   default     = null
+#   # default     = "scripts/cloud-init/cloud-init"
+# }
 
-variable "vmss_custom_data_data" {
+variable "vmss_custom_data" {
   type        = string
   description = "The base64 encoded data to use as custom data for the VMSS instances"
   default     = null
@@ -183,23 +184,23 @@ variable "vmss_identity_ids" {
   default     = null
 }
 
-variable "vmss_se_enabled" {
-  type        = bool
-  description = "Whether to process the Linux Virtual Machine Scale Set extension resource"
-  default     = true
-}
+# variable "vmss_se_enabled" {
+#   type        = bool
+#   description = "Whether to process the Linux Virtual Machine Scale Set extension resource"
+#   default     = true
+# }
 
-variable "vmss_se_settings_script" {
-  type        = string
-  description = "The path of the file to use as the script for the VMSS custom script extension"
-  default     = "scripts/vmss_se/vmss-startup.sh"
-}
+# variable "vmss_se_settings_script" {
+#   type        = string
+#   description = "The path of the file to use as the script for the VMSS custom script extension"
+#   default     = "scripts/vmss_se/vmss-startup.sh"
+# }
 
-variable "vmss_se_settings_data" {
-  type        = string
-  description = "The base64 encoded data to use as the script for the VMSS custom script extension"
-  default     = null
-}
+# variable "vmss_se_settings_data" {
+#   type        = string
+#   description = "The base64 encoded data to use as the script for the VMSS custom script extension"
+#   default     = null
+# }
 
 variable "vmss_zones" {
   type        = list(string)
