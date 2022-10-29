@@ -1,10 +1,5 @@
 ---
 
-skip-path:
-  # uses some insecure storage account settings to allow public access for test results
-  - system_assigned_managed_identity_custom_data
-  - user_assigned_managed_identity
-  - certificate_chain
 skip-check:
   # "Ensure Azure linux scale set does not use basic authentication(Use SSH Key Instead)"
   # recommended to use SSH, but module does support password auth too
