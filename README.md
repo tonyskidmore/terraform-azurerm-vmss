@@ -80,3 +80,5 @@ module "vmss" {
 
 
 <!-- END_TF_DOCS -->
+
+[scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
