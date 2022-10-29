@@ -26,17 +26,13 @@ jobs:
           # of changed files within `super-linter`
           fetch-depth: 0
 
-      - name: Setup miniconda environment
-        uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/setup-python@v4
         with:
-          # channels: conda-forge,nodefaults
-          # channel-priority: strict
-          activate-environment: terraform-azurerm-vmss
-          auto-update-conda: false
-          # python-version: 3.9
-          environment-file: conda_environment.yml
-          # mamba-version: '*'
-          # use-mamba: true
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+
+      - name: Install Python packages
+        run: pip install -r dev-requirements.txt
 
         # https://github.com/marketplace/actions/super-linter
       - name: Lint Code Base
