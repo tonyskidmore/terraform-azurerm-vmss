@@ -12,7 +12,6 @@ on:
     # branches:
     #   - main
 
-
 jobs:
   build:
     name: Lint Code Base
@@ -25,11 +24,6 @@ jobs:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
           fetch-depth: 0
-
-      - name: Debug
-        run: |
-          pip freeze
-          env
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -56,8 +50,10 @@ jobs:
 
       - name: Patch .pre-commit-config.yaml
         run: |
-          sed -i '/terraform-docs/,+4d' "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
-          sed -i '/- id: end-of-file-fixer/d' "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+          sed -i '/terraform-docs/,+4d' \
+            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+          sed -i '/- id: end-of-file-fixer/d' \
+            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
 
       - name: Pre-commit check all files
         run: |
