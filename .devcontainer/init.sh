@@ -8,5 +8,3 @@ then
   pre-commit install
   pre-commit install-hooks
 fi
-
-# command -v tflint > /dev/null && [[ -f .tflint.hcl ]] && tflint --init
