@@ -32,8 +32,8 @@ jobs:
           python-version: '3.9'
           cache: 'pip' # caching pip dependencies
 
-      # - name: Install Python packages
-      #   run: pip install -r dev-requirements.txt
+      - name: Install Python packages
+        run: pip install -r requirements.txt
 
         # https://github.com/marketplace/actions/super-linter
       - name: Lint Code Base
@@ -45,7 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Use pre-commit to fix newly generated data files
-        # if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         run: |
           pre-commit install
           pre-commit install-hooks
