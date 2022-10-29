@@ -1,3 +1,5 @@
+---
+
 name: terraform-azurerm-vmss
 channels:
   - defaults
@@ -5,4 +7,4 @@ dependencies:
   - pip
   - python==3.9.13
   - pip:
-    - pre-commit
+      - pre-commit
