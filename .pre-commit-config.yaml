@@ -23,13 +23,12 @@ repos:
     rev: v1.76.0 # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
     hooks:
       - id: terraform_fmt
-      - id: terraform_validate
+      # - id: terraform_validate
       # - id: terraform_tfsec
       - id: terraform_tflint
-      # - id: terraform_checkov
 
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: "v0.16.0"
     hooks:
       - id: terraform-docs-go
-        # args: ["markdown", "table", "--output-file", "README.md", "./"]
+        args: ["markdown", "table", "--output-file", "README.md", "./"]
