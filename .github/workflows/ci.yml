@@ -3,6 +3,8 @@
 permissions:
   statuses: write
 
+name: Lint Code Base
+
 on:
   schedule:
     - cron: "00 19 * * 0"
