@@ -39,9 +39,7 @@ administrator password as opposed to an SSH key pair
 | vmss\_id | Virtual Machine Scale Set ID |
 
 Example
----
-**NOTE**
----
+
 ```hcl
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
