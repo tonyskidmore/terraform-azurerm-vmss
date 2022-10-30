@@ -3,11 +3,30 @@
 permissions:
   contents: write
   pull-requests: write
+  statuses: write
+
+# permissions:
+#   actions: read|write|none
+#   checks: read|write|none
+#   contents: read|write|none
+#   deployments: read|write|none
+#   id-token: read|write|none
+#   issues: read|write|none
+#   discussions: read|write|none
+#   packages: read|write|none
+#   pages: read|write|none
+#   pull-requests: read|write|none
+#   repository-projects: read|write|none
+#   security-events: read|write|none
+#   statuses: read|write|none
 
 on:
   schedule:
     - cron: "30 18 * * 0"
   workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -29,7 +48,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: true
           VALIDATE_JSCPD: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,4 +89,5 @@ jobs:
         run: |
           pre-commit install
           pre-commit install-hooks
+          tflint --version
           pre-commit run --all-files
