@@ -5,7 +5,7 @@ permissions:
 
 on:
   schedule:
-    - cron: "30 18 * * 0"
+    - cron: "00 19 * * 0"
   workflow_dispatch:
   push:
     branches:
@@ -31,7 +31,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: true
           VALIDATE_JSCPD: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
