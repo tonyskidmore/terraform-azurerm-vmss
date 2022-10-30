@@ -30,5 +30,6 @@ variable "vmss_vnet_name" {
 
 variable "vmss_admin_password" {
   type        = string
-  description = "Paasword to allocate to the admin user account"
+  description = "Password to allocate to the admin user account"
+  default     = "Sup3rS3cr3tP@55w0rd!"
 }

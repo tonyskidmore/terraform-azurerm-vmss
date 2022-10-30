@@ -10,7 +10,7 @@ administrator password as opposed to an SSH key pair
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.13.0 |
+| terraform | >= 1.0.0 |
 | azurerm | >=3.1.0 |
 ## Providers
 
@@ -26,7 +26,7 @@ administrator password as opposed to an SSH key pair
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| vmss\_admin\_password | Paasword to allocate to the admin user account | `string` | n/a | yes |
+| vmss\_admin\_password | Password to allocate to the admin user account | `string` | `"Sup3rS3cr3tP@55w0rd!"` | no |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | `"vmss-agent-pool-linux-001"` | no |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | `"rg-azdo-agents-networks-01"` | no |
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | `"snet-azdo-agents-01"` | no |
@@ -39,9 +39,7 @@ administrator password as opposed to an SSH key pair
 | vmss\_id | Virtual Machine Scale Set ID |
 
 Example
----
-**NOTE**
----
+
 ```hcl
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name

@@ -24,9 +24,7 @@ content: |-
   {{ .Outputs }}
   {{ .Footer }}
   Example
-  ---
-  **NOTE**
-  ---
+
   ```hcl
   {{ include "./main.tf" }}
   ```
