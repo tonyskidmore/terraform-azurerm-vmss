@@ -1,6 +1,4 @@
----
-
-formatter: "" # this is required
+formatter: "markdown table" # this is required
 
 version: ""
 
@@ -8,35 +6,28 @@ header-from: main.tf
 footer-from: ""
 
 recursive:
-  enabled: true
-  path: examples
+  enabled: false
+  path: modules
 
 sections:
-  hide: [ ]
-  show: [ ]
+  hide: []
+  show: []
 
 content: |-
-
   {{ .Header }}
-
-  ## Basic example
-
-  ```hcl
-
-  {{ include "examples/admin_password/main.tf" }}
-
-  ```
-  {{ .Resources }}
-
-  {{ .Inputs }}
-
-  {{ .Outputs }}
-
+  {{ .Requirements }}
   {{ .Providers }}
-
+  {{ .Modules }}
+  {{ .Inputs }}
+  {{ .Outputs }}
   {{ .Footer }}
-
-
+  Example
+  ---
+  **NOTE**
+  ---
+  ```hcl
+  {{ include "./main.tf" }}
+  ```
 output:
   file: "README.md"
   mode: inject
@@ -44,7 +35,6 @@ output:
     <!-- BEGIN_TF_DOCS -->
     {{ .Content }}
     <!-- END_TF_DOCS -->
-
 output-values:
   enabled: false
   from: ""
@@ -54,10 +44,10 @@ sort:
   by: name
 
 settings:
-  anchor: true
+  anchor: false
   color: true
   default: true
-  description: false
+  description: true
   escape: true
   hide-empty: false
   html: true
