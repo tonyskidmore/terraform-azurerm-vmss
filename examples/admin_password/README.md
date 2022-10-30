@@ -1,4 +1,4 @@
-# Azure Virtual Machines Scale Set
+# Azure Virtual Machine Scale Set
 
 Example of creating an Azure VMSS with instances configured with an
 administrator password as opposed to an SSH key pair
