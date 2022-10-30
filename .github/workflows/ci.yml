@@ -4,16 +4,16 @@ name: Lint Code Base
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - main
+  # pull_request:
+  #   types:
+  #     - closed
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    # if: github.event.pull_request.merged == true || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     name: Lint Code Base
     runs-on: ubuntu-latest
 
