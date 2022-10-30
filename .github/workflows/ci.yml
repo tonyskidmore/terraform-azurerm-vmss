@@ -5,18 +5,19 @@ name: Lint Code Base
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - 'README.md'
-      - 'CHANGELOG.md'
+    # paths-ignore:
+    #   - 'README.md'
+    #   - 'CHANGELOG.md'
     branches:
       - main
   pull_request:
     branches:
       - main
-    types: [synchronize, closed]
+    types: [closed]
 
 jobs:
   build:
+    if: (!(github.event.action == 'closed' && github.event.pull_request.merged != true))
     name: Lint Code Base
     runs-on: ubuntu-latest
 

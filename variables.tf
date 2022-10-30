@@ -94,7 +94,7 @@ variable "vmss_source_image_sku" {
 }
 
 variable "vmss_source_image_version" {
-  description = "Azure Virtual Machine Scale Set Source Image Veersion"
+  description = "Azure Virtual Machine Scale Set Source Image Version"
   type        = string
   default     = "latest"
 }

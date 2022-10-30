@@ -17,17 +17,18 @@ pool in Azure DevOps.
 ```hcl
 
 data "azurerm_subnet" "agents" {
-  name                 = "snet-azdo-agents-01"
-  virtual_network_name = "vnet-azdo-agents-01"
-  resource_group_name  = "rg-azdo-agents-networks-01"
+  name                 = var.vmss_subnet_name
+  virtual_network_name = var.vmss_vnet_name
+  resource_group_name  = var.vmss_vnet_resource_group_name
 }
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
   version                  = "0.1.0"
-  vmss_resource_group_name = "rg-vmss-azdo-agents-01"
+  vmss_name                = var.vmss_name
+  vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
-  vmss_admin_password      = "P@55w0rd2022"
+  vmss_admin_password      = var.vmss_admin_password
 }
 
 ```
@@ -62,7 +63,7 @@ module "vmss" {
 | <a name="input_vmss_source_image_offer"></a> [vmss\_source\_image\_offer](#input\_vmss\_source\_image\_offer) | Azure Virtual Machine Scale Set Source Image Offer | `string` | `"0001-com-ubuntu-server-focal"` | no |
 | <a name="input_vmss_source_image_publisher"></a> [vmss\_source\_image\_publisher](#input\_vmss\_source\_image\_publisher) | Azure Virtual Machine Scale Set Source Image Publisher | `string` | `"Canonical"` | no |
 | <a name="input_vmss_source_image_sku"></a> [vmss\_source\_image\_sku](#input\_vmss\_source\_image\_sku) | Azure Virtual Machine Scale Set Source Image SKU | `string` | `"20_04-lts"` | no |
-| <a name="input_vmss_source_image_version"></a> [vmss\_source\_image\_version](#input\_vmss\_source\_image\_version) | Azure Virtual Machine Scale Set Source Image Veersion | `string` | `"latest"` | no |
+| <a name="input_vmss_source_image_version"></a> [vmss\_source\_image\_version](#input\_vmss\_source\_image\_version) | Azure Virtual Machine Scale Set Source Image Version | `string` | `"latest"` | no |
 | <a name="input_vmss_ssh_public_key"></a> [vmss\_ssh\_public\_key](#input\_vmss\_ssh\_public\_key) | Public key to use for SSH access to VMs | `string` | `""` | no |
 | <a name="input_vmss_storage_account_uri"></a> [vmss\_storage\_account\_uri](#input\_vmss\_storage\_account\_uri) | VMSS boot diagnostics storage account URI | `string` | `null` | no |
 | <a name="input_vmss_subnet_id"></a> [vmss\_subnet\_id](#input\_vmss\_subnet\_id) | Existing subnet ID of where the VMSS will be connected | `string` | n/a | yes |
