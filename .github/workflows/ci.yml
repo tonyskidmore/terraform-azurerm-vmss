@@ -3,9 +3,11 @@
 permissions:
   statuses: write
 
+name: Lint Code Base
+
 on:
   schedule:
-    - cron: "00 19 * * 0"
+    - cron: "00 20 * * 0"
   workflow_dispatch:
   push:
     branches:
