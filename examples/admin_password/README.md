@@ -28,7 +28,7 @@ administrator password as opposed to an SSH key pair
 |------|-------------|------|---------|:--------:|
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | `"Sup3rS3cr3tP@55w0rd!"` | no |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | `"vmss-agent-pool-linux-001"` | no |
-| vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | `"rg-azdo-agents-networks-01"` | no |
+| vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | `"rg-vmss-azdo-agents-01"` | no |
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | `"snet-azdo-agents-01"` | no |
 | vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | `"vnet-azdo-agents-01"` | no |
 | vmss\_vnet\_resource\_group\_name | Existing resource group where the Vnet containing the subnet is located | `string` | `"rg-azdo-agents-networks-01"` | no |

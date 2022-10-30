@@ -7,7 +7,7 @@ variable "vmss_name" {
 variable "vmss_resource_group_name" {
   type        = string
   description = "Existing resource group name of where the VMSS will be created"
-  default     = "rg-azdo-agents-networks-01"
+  default     = "rg-vmss-azdo-agents-01"
 }
 
 variable "vmss_vnet_resource_group_name" {
