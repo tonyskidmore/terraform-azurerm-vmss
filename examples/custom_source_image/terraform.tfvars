@@ -1,0 +1,10 @@
+vmss_name                     = "vmss-agent-pool-linux-002"
+vmss_admin_password           = "Vm55P@sw0rd123"
+vmss_instances                = 1
+vmss_resource_group_name      = "rg-tests-terraform-azurerm-vmss"
+vmss_vnet_resource_group_name = "rg-azdo-agents-networks-01"
+vmss_vnet_name                = "vnet-azdo-agents-01"
+vmss_subnet_name              = "snet-azdo-agents-01"
+vmss_se_enabled               = true
+# vmss_se_settings_data         = "echo 'vmss_se_settings_data' > /tmp/vmss_se_settings"
+vmss_se_settings_script = "scripts/vmss-test.sh"

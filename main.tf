@@ -75,4 +75,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   boot_diagnostics {
     storage_account_uri = var.vmss_storage_account_uri
   }
+
+  dynamic "extension" {
+    for_each = var.vmss_se_enabled ? [1] : []
+    content {
+      name                 = "vmss_se"
+      publisher            = "Microsoft.Azure.Extensions"
+      type                 = "CustomScript"
+      type_handler_version = "2.0"
+      settings             = local.vmss_se_settings
+    }
+  }
 }

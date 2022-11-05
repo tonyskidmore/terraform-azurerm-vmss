@@ -173,3 +173,21 @@ variable "vmss_zones" {
   description = "A collection of availability zones to spread the Virtual Machines over"
   default     = []
 }
+
+variable "vmss_se_enabled" {
+  type        = bool
+  description = "Whether to process the Linux Virtual Machine Scale Set extension resource"
+  default     = false
+}
+
+variable "vmss_se_settings_script" {
+  type        = string
+  description = "The path of the file to use as the script for the VMSS custom script extension"
+  default     = "scripts/vmss-startup.sh"
+}
+
+variable "vmss_se_settings_data" {
+  type        = string
+  description = "The base64 encoded data to use as the script for the VMSS custom script extension"
+  default     = null
+}
