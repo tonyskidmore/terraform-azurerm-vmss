@@ -147,7 +147,7 @@ variable "vmss_resource_prefix" {
 
 variable "vmss_load_balancer_backend_address_pool_ids" {
   type        = list(string)
-  description = "A list of Backend Address Pools ID's from a Load Balancer which this Virtual Machine Scale Set should be connected to"
+  description = "A list of Backend Address Pools IDs from a Load Balancer which this Virtual Machine Scale Set should be connected to"
   default     = null
 }
 
