@@ -27,7 +27,7 @@ You can learn more about and also create this image yourself by following along 
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | ../.. | n/a |
+| vmss | tonyskidmore/vmss/azurerm | 0.2.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -163,9 +163,8 @@ resource "azurerm_subnet_network_security_group_association" "nsg-rule" {
 }
 
 module "vmss" {
-  # source                                    = "tonyskidmore/vmss/azurerm"
-  # version                                   = "0.2.0"
-  source                                      = "../.."
+  source                                      = "tonyskidmore/vmss/azurerm"
+  version                                     = "0.2.0"
   vmss_name                                   = var.vmss_name
   vmss_resource_group_name                    = var.vmss_resource_group_name
   vmss_subnet_id                              = azurerm_subnet.agents.id
