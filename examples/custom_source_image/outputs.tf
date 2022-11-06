@@ -1,5 +1,5 @@
 output "vmss_id" {
-  value       = module.vmss.vmss_id
+  value       = try(module.vmss.vmss_id, null)
   description = "Virtual Machine Scale Set ID"
 }
 
@@ -17,4 +17,9 @@ output "tls_private_key" {
 output "source_ip" {
   value       = data.http.ifconfig.response_body
   description = "Source IP address of Terraform execution"
+}
+
+output "public_ip" {
+  value       = azurerm_public_ip.vmss.ip_address
+  description = "Public IP associate to VMSS load balancer"
 }

@@ -1,5 +1,5 @@
 output "vmss_id" {
-  value       = azurerm_linux_virtual_machine_scale_set.ado_pool[0].id
+  value       = try(azurerm_linux_virtual_machine_scale_set.ado_pool[0].id, null)
   description = "Virtual Machine Scale Set ID"
 }
 

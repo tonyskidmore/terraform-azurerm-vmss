@@ -16,18 +16,35 @@ pool in Azure DevOps.
 
 ```hcl
 
-data "azurerm_subnet" "agents" {
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_resource_group" "vmss" {
+  name = var.vmss_resource_group_name
+}
+
+resource "azurerm_virtual_network" "vmss" {
+  name                = var.vmss_vnet_name
+  resource_group_name = data.azurerm_resource_group.vmss.name
+  address_space       = var.vmss_vnet_address_space
+  location            = data.azurerm_resource_group.vmss.location
+  tags                = var.tags
+}
+
+resource "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
-  virtual_network_name = var.vmss_vnet_name
-  resource_group_name  = var.vmss_vnet_resource_group_name
+  resource_group_name  = data.azurerm_resource_group.vmss.name
+  address_prefixes     = var.vmss_subnet_address_prefixes
+  virtual_network_name = azurerm_virtual_network.vmss.name
 }
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.1.0"
+  version                  = "0.2.0"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
-  vmss_subnet_id           = data.azurerm_subnet.agents.id
+  vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
 }
 
@@ -51,6 +68,7 @@ module "vmss" {
 | <a name="input_vmss_identity_ids"></a> [vmss\_identity\_ids](#input\_vmss\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine Scale Set | `list(string)` | `null` | no |
 | <a name="input_vmss_identity_type"></a> [vmss\_identity\_type](#input\_vmss\_identity\_type) | Specifies the type of Managed Service Identity that should be configured on this Linux Virtual Machine Scale Set | `string` | `null` | no |
 | <a name="input_vmss_instances"></a> [vmss\_instances](#input\_vmss\_instances) | Azure Virtual Machine Scale Set number of instances | `number` | `0` | no |
+| <a name="input_vmss_load_balancer_backend_address_pool_ids"></a> [vmss\_load\_balancer\_backend\_address\_pool\_ids](#input\_vmss\_load\_balancer\_backend\_address\_pool\_ids) | A list of Backend Address Pools ID's from a Load Balancer which this Virtual Machine Scale Set should be connected to | `list(string)` | `null` | no |
 | <a name="input_vmss_location"></a> [vmss\_location](#input\_vmss\_location) | Existing resource group name of where the VMSS will be created | `string` | `"uksouth"` | no |
 | <a name="input_vmss_name"></a> [vmss\_name](#input\_vmss\_name) | Azure Virtual Machine Scale Set name | `string` | `"azdo-vmss-pool-001"` | no |
 | <a name="input_vmss_os"></a> [vmss\_os](#input\_vmss\_os) | Whether to process the Linux Virtual Machine Scale Set resource | `string` | `"linux"` | no |
