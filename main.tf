@@ -66,13 +66,25 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
     primary = true
 
     ip_configuration {
-      name      = "${var.vmss_resource_prefix}-ipconfig"
-      primary   = true
-      subnet_id = var.vmss_subnet_id
+      name                                   = "${var.vmss_resource_prefix}-ipconfig"
+      primary                                = true
+      subnet_id                              = var.vmss_subnet_id
+      load_balancer_backend_address_pool_ids = var.vmss_load_balancer_backend_address_pool_ids
     }
   }
 
   boot_diagnostics {
     storage_account_uri = var.vmss_storage_account_uri
+  }
+
+  dynamic "extension" {
+    for_each = var.vmss_se_enabled ? [1] : []
+    content {
+      name                 = "vmss_se"
+      publisher            = "Microsoft.Azure.Extensions"
+      type                 = "CustomScript"
+      type_handler_version = "2.0"
+      settings             = local.vmss_se_settings
+    }
   }
 }
