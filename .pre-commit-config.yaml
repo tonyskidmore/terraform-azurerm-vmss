@@ -29,6 +29,12 @@ repos:
       # - id: terraform_tfsec
       - id: terraform_tflint
 
+  - repo: https://github.com/tenable/terrascan
+    rev: v1.16.0
+    hooks:
+      - id: terraform-pre-commit
+        args: [ '-i terraform']
+
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: "v0.16.0"
     hooks:
