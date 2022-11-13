@@ -16,7 +16,7 @@ administrator password as opposed to an SSH key pair
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.29.1 |
+| azurerm | >=3.1.0 |
 ## Modules
 
 | Name | Source | Version |
