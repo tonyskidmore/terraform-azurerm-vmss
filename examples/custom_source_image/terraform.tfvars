@@ -13,3 +13,12 @@ vmss_se_enabled              = true
 # vmss_se_settings_data will be used before vmss_se_settings_script
 # vmss_se_settings_data         = "echo 'vmss_se_settings_data' > /tmp/vmss_se_settings"
 vmss_se_settings_script = "scripts/vmss-test.sh"
+vmss_data_disks = {
+  data1 = {
+    caching              = "None"
+    create_option        = "Empty"
+    disk_size_gb         = 10
+    lun                  = 1
+    storage_account_type = "Standard_LRS"
+  }
+}

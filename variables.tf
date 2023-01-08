@@ -39,6 +39,17 @@ variable "vmss_os" {
   default     = "linux"
 }
 
+variable "vmss_data_disks" {
+  type = map(object({
+    caching              = string # None, ReadOnly and ReadWrite
+    create_option        = string # Empty and FromImage
+    disk_size_gb         = number
+    lun                  = number
+    storage_account_type = string # Standard_LRS, StandardSSD_LRS, Premium_LRS and UltraSSD_LRS
+  }))
+  description = "Additional data disks"
+}
+
 variable "vmss_name" {
   type        = string
   description = "Azure Virtual Machine Scale Set name"
