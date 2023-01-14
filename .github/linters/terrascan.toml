@@ -11,6 +11,9 @@
     # skip rules (list of rules to skip)
     # ignore "Ensure that Azure Virtual Network subnet is configured with a Network Security Group"
     # simple admin_password example does not include a NSG assignment
+    # data_disk example does not implement resource group lock
+    # "Ensure that Azure Resource Group has resource lock enabled"
     skip-rules = [
-      "AC_AZURE_0356"
+      "AC_AZURE_0356",
+      "AC_AZURE_0389"
     ]
