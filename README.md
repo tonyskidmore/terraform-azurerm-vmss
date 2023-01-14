@@ -20,28 +20,31 @@ provider "azurerm" {
   features {}
 }
 
-data "azurerm_resource_group" "vmss" {
-  name = var.vmss_resource_group_name
+resource "azurerm_resource_group" "vmss" {
+  name     = var.vmss_resource_group_name
+  location = var.vmss_location
 }
 
 resource "azurerm_virtual_network" "vmss" {
   name                = var.vmss_vnet_name
-  resource_group_name = data.azurerm_resource_group.vmss.name
+  resource_group_name = azurerm_resource_group.vmss.name
   address_space       = var.vmss_vnet_address_space
-  location            = data.azurerm_resource_group.vmss.location
+  location            = azurerm_resource_group.vmss.location
   tags                = var.tags
 }
 
 resource "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
-  resource_group_name  = data.azurerm_resource_group.vmss.name
+  resource_group_name  = azurerm_resource_group.vmss.name
   address_prefixes     = var.vmss_subnet_address_prefixes
   virtual_network_name = azurerm_virtual_network.vmss.name
 }
 
 module "vmss" {
-  source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.2.2"
+  # TODO:
+  # source                   = "tonyskidmore/vmss/azurerm"
+  # version                  = "0.2.2"
+  source                   = "../../"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
@@ -63,7 +66,7 @@ module "vmss" {
 | <a name="input_vmss_admin_password"></a> [vmss\_admin\_password](#input\_vmss\_admin\_password) | Azure Virtual Machine Scale Set instance administrator password | `string` | `null` | no |
 | <a name="input_vmss_admin_username"></a> [vmss\_admin\_username](#input\_vmss\_admin\_username) | Azure Virtual Machine Scale Set instance administrator name | `string` | `"adminuser"` | no |
 | <a name="input_vmss_custom_data"></a> [vmss\_custom\_data](#input\_vmss\_custom\_data) | The base64 encoded data to use as custom data for the VMSS instances | `string` | `null` | no |
-| <a name="input_vmss_data_disks"></a> [vmss\_data\_disks](#input\_vmss\_data\_disks) | Additional data disks | <pre>map(object({<br>    caching              = string # None, ReadOnly and ReadWrite<br>    create_option        = string # Empty and FromImage<br>    disk_size_gb         = number<br>    lun                  = number<br>    storage_account_type = string # Standard_LRS, StandardSSD_LRS, Premium_LRS and UltraSSD_LRS<br>  }))</pre> | n/a | yes |
+| <a name="input_vmss_data_disks"></a> [vmss\_data\_disks](#input\_vmss\_data\_disks) | Additional data disks | <pre>list(object({<br>    caching              = string<br>    create_option        = string<br>    disk_size_gb         = string<br>    lun                  = number<br>    storage_account_type = string<br>  }))</pre> | `[]` | no |
 | <a name="input_vmss_disk_size_gb"></a> [vmss\_disk\_size\_gb](#input\_vmss\_disk\_size\_gb) | The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from | `number` | `null` | no |
 | <a name="input_vmss_encryption_at_host_enabled"></a> [vmss\_encryption\_at\_host\_enabled](#input\_vmss\_encryption\_at\_host\_enabled) | Should all of the disks (including the temp disk) attached to this Virtual Machine be encrypted by enabling Encryption at Host? | `bool` | `false` | no |
 | <a name="input_vmss_identity_ids"></a> [vmss\_identity\_ids](#input\_vmss\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine Scale Set | `list(string)` | `null` | no |
@@ -95,6 +98,7 @@ module "vmss" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_vmss"></a> [vmss](#output\_vmss) | Virtual Machine Scale Set object |
 | <a name="output_vmss_id"></a> [vmss\_id](#output\_vmss\_id) | Virtual Machine Scale Set ID |
 | <a name="output_vmss_system_assigned_identity_id"></a> [vmss\_system\_assigned\_identity\_id](#output\_vmss\_system\_assigned\_identity\_id) | Virtual Machine Scale Set SystemAssigned Identity |
 | <a name="output_vmss_user_assigned_identity_ids"></a> [vmss\_user\_assigned\_identity\_ids](#output\_vmss\_user\_assigned\_identity\_ids) | Virtual Machine Scale Set UserAssigned Identities |

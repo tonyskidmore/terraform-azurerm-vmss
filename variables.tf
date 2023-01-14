@@ -40,14 +40,15 @@ variable "vmss_os" {
 }
 
 variable "vmss_data_disks" {
-  type = map(object({
-    caching              = string # None, ReadOnly and ReadWrite
-    create_option        = string # Empty and FromImage
-    disk_size_gb         = number
+  type = list(object({
+    caching              = string
+    create_option        = string
+    disk_size_gb         = string
     lun                  = number
-    storage_account_type = string # Standard_LRS, StandardSSD_LRS, Premium_LRS and UltraSSD_LRS
+    storage_account_type = string
   }))
   description = "Additional data disks"
+  default     = []
 }
 
 variable "vmss_name" {

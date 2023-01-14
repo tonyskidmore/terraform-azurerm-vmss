@@ -32,7 +32,9 @@ repos:
         args:
           - --args=--non-recursive
           - --args=--skip-rules="AC_AZURE_0356" # avoids nsg test for simple admin_password example
+          - --args=--skip-rules="AC_AZURE_0389" # skip "Ensure that Azure Resource Group has resource lock enabled"
           - --args=--policy-type=azure
+          - --args=--verbose
 
   # - repo: https://github.com/tenable/terrascan
   #   rev: v1.16.0
