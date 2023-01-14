@@ -39,6 +39,18 @@ variable "vmss_os" {
   default     = "linux"
 }
 
+variable "vmss_data_disks" {
+  type = list(object({
+    caching              = string
+    create_option        = string
+    disk_size_gb         = string
+    lun                  = number
+    storage_account_type = string
+  }))
+  description = "Additional data disks"
+  default     = []
+}
+
 variable "vmss_name" {
   type        = string
   description = "Azure Virtual Machine Scale Set name"

@@ -16,7 +16,7 @@ administrator password as opposed to an SSH key pair
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.38.0 |
+| azurerm | 3.39.1 |
 ## Modules
 
 | Name | Source | Version |
@@ -28,6 +28,7 @@ administrator password as opposed to an SSH key pair
 |------|-------------|------|---------|:--------:|
 | tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br>  "environment": "test",<br>  "project": "vmss"<br>}</pre> | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
+| vmss\_data\_disks | Additional data disks | <pre>list(object({<br>    caching              = string<br>    create_option        = string<br>    disk_size_gb         = string<br>    lun                  = number<br>    storage_account_type = string<br>  }))</pre> | `[]` | no |
 | vmss\_location | Azure location | `string` | n/a | yes |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
@@ -75,6 +76,7 @@ module "vmss" {
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
+  vmss_data_disks          = var.vmss_data_disks
 }
 ```
 <!-- END_TF_DOCS -->

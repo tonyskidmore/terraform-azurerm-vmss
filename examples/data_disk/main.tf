@@ -29,4 +29,5 @@ module "vmss" {
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
+  vmss_data_disks          = var.vmss_data_disks
 }

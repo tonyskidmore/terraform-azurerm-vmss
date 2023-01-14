@@ -61,6 +61,17 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
     disk_size_gb         = var.vmss_disk_size_gb
   }
 
+  dynamic "data_disk" {
+    for_each = var.vmss_data_disks
+    content {
+      caching              = data_disk.value.caching
+      create_option        = data_disk.value.create_option
+      disk_size_gb         = data_disk.value.disk_size_gb
+      lun                  = data_disk.value.lun
+      storage_account_type = data_disk.value.storage_account_type
+    }
+  }
+
   network_interface {
     name    = "${var.vmss_resource_prefix}-nic"
     primary = true
