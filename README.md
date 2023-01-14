@@ -41,10 +41,8 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  # TODO:
-  # source                   = "tonyskidmore/vmss/azurerm"
-  # version                  = "0.2.2"
-  source                   = "../../"
+  source                   = "tonyskidmore/vmss/azurerm"
+  version                  = "0.3.0"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
