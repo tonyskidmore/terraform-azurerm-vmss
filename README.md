@@ -4,9 +4,12 @@
 
 Azure Virtual Machine Scale Set Terraform module.
 It is a single resource module, with opinionated defaults
-that form the starting point for the creation of an
+that forms the starting point for the creation of an
 [Azure virtual machine scale set agent][scale-agents]
 pool in Azure DevOps.
+
+This module is used by the [terraform-azurerm-vmss-devops-agent](https://registry.terraform.io/modules/tonyskidmore/vmss-devops-agent/azurerm/latest)
+to create the Azure VMSS side of a self-hosted Azure DevOps Scale Set agent pool.
 
 <!-- BEGIN_TF_DOCS -->
 
@@ -42,7 +45,7 @@ resource "azurerm_subnet" "agents" {
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.3.0"
+  version                  = "0.3.1"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
