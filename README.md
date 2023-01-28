@@ -8,7 +8,7 @@ that forms the starting point for the creation of an
 [Azure virtual machine scale set agent][scale-agents]
 pool in Azure DevOps.
 
-The module used by the [terraform-azurerm-vmss-devops-agent](https://registry.terraform.io/modules/tonyskidmore/vmss-devops-agent/azurerm/latest)
+This module is used by the [terraform-azurerm-vmss-devops-agent](https://registry.terraform.io/modules/tonyskidmore/vmss-devops-agent/azurerm/latest)
 to create the Azure VMSS side of a self-hosted Azure DevOps Scale Set agent pool.
 
 <!-- BEGIN_TF_DOCS -->
