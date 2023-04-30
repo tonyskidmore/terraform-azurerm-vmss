@@ -2,6 +2,9 @@
 
 [keepachangelog](https://keepachangelog.com/en/1.0.0/)
 
+## [0.3.2]
+* Added `user_data` argument
+
 ## [0.3.1]
 * Minor documentation updates
 
