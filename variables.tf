@@ -169,6 +169,12 @@ variable "vmss_custom_data" {
   default     = null
 }
 
+variable "vmss_user_data" {
+  description = "The base64 encoded data to use as user data for the VMSS instances"
+  type        = string
+  default     = null
+}
+
 variable "vmss_identity_type" {
   type        = string
   description = "Specifies the type of Managed Service Identity that should be configured on this Linux Virtual Machine Scale Set`"

@@ -12,6 +12,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   source_image_id                 = var.vmss_source_image_id
   tags                            = var.tags
   custom_data                     = var.vmss_custom_data
+  user_data                       = var.vmss_user_data
   zones                           = var.vmss_zones
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
   overprovision = false

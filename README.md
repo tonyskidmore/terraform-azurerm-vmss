@@ -45,7 +45,7 @@ resource "azurerm_subnet" "agents" {
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.3.1"
+  version                  = "0.3.2"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
@@ -93,6 +93,7 @@ module "vmss" {
 | <a name="input_vmss_ssh_public_key"></a> [vmss\_ssh\_public\_key](#input\_vmss\_ssh\_public\_key) | Public key to use for SSH access to VMs | `string` | `""` | no |
 | <a name="input_vmss_storage_account_uri"></a> [vmss\_storage\_account\_uri](#input\_vmss\_storage\_account\_uri) | VMSS boot diagnostics storage account URI | `string` | `null` | no |
 | <a name="input_vmss_subnet_id"></a> [vmss\_subnet\_id](#input\_vmss\_subnet\_id) | Existing subnet ID of where the VMSS will be connected | `string` | n/a | yes |
+| <a name="input_vmss_user_data"></a> [vmss\_user\_data](#input\_vmss\_user\_data) | The base64 encoded data to use as user data for the VMSS instances | `string` | `null` | no |
 | <a name="input_vmss_zones"></a> [vmss\_zones](#input\_vmss\_zones) | A collection of availability zones to spread the Virtual Machines over | `list(string)` | `[]` | no |
 
 ## Outputs

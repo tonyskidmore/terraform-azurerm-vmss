@@ -21,7 +21,7 @@ administrator password as opposed to an SSH key pair
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | tonyskidmore/vmss/azurerm | 0.3.1 |
+| vmss | tonyskidmore/vmss/azurerm | 0.3.2 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -70,7 +70,7 @@ resource "azurerm_subnet" "agents" {
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.3.1"
+  version                  = "0.3.2"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id
