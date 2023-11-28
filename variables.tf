@@ -37,6 +37,11 @@ variable "vmss_os" {
   type        = string
   description = "Whether to process the Linux Virtual Machine Scale Set resource"
   default     = "linux"
+
+  validation {
+    condition     = contains(["linux", "windows"], var.vmss_os)
+    error_message = "The vmss_os must be linux or windows valid type."
+  }
 }
 
 variable "vmss_data_disks" {
@@ -57,10 +62,16 @@ variable "vmss_name" {
   default     = "azdo-vmss-pool-001"
 }
 
+variable "vmss_computer_name_prefix" {
+  type        = string
+  description = "The prefix which should be used for the name of the Virtual Machines in this Scale Set"
+  default     = null
+}
+
 variable "vmss_sku" {
   type        = string
   description = "Azure Virtual Machine Scale Set SKU"
-  default     = "Standard_D2_v3"
+  default     = "Standard_D2s_v3"
 }
 
 variable "vmss_instances" {
@@ -90,25 +101,25 @@ variable "vmss_source_image_id" {
 variable "vmss_source_image_offer" {
   description = "Azure Virtual Machine Scale Set Source Image Offer"
   type        = string
-  default     = "0001-com-ubuntu-server-focal"
+  default     = null
 }
 
 variable "vmss_source_image_publisher" {
   description = "Azure Virtual Machine Scale Set Source Image Publisher"
   type        = string
-  default     = "Canonical"
+  default     = null
 }
 
 variable "vmss_source_image_sku" {
   description = "Azure Virtual Machine Scale Set Source Image SKU"
   type        = string
-  default     = "20_04-lts"
+  default     = null
 }
 
 variable "vmss_source_image_version" {
   description = "Azure Virtual Machine Scale Set Source Image Version"
   type        = string
-  default     = "latest"
+  default     = null
 }
 
 variable "vmss_ssh_public_key" {
