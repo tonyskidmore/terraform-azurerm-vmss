@@ -114,4 +114,101 @@ module "vmss" {
 
 <!-- END_TF_DOCS -->
 
+## Known issues
+
+### windowsConfiguration.patchSettings.patchMode not valid
+
+Setting `vmss_source_image_sku` to `2022-datacenter-azure-edition-core` can result in the following error during `terraform apply`:
+
+````bash
+
+Virtual Machine Scale Set Name: "vmss-win-ado-001": compute.VirtualMachineScaleSetsClient#CreateOrUpdate: Failure sending request: StatusCode=400 --
+Original Error: Code="InvalidParameter" Message="The property 'windowsConfiguration.patchSettings.patchMode' is not valid because the
+'Microsoft.Compute/InGuestAutoPatchVmssUniformPreview' feature is not enabled for this subscription." Target="windowsConfiguration.patchSettings.patchMode"
+sku       = coalesce(var.vmss_source_image_offer, "2022-datacenter-azure-edition-core"),
+
+````
+
+Reference: [Cannot create a flexible scale set with a Windows Server Core image #21504](https://github.com/Azure/azure-cli/issues/21504)  
+
+To check what core skus are available you can use something like the following command:
+
+````bash
+az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" --all | jq -r '[(.[].sku )] | unique'
+[
+  "2016-datacenter-server-core-g2",
+  "2016-datacenter-server-core-smalldisk-g2",
+  "2019-datacenter-core-g2",
+  "2019-datacenter-core-smalldisk-g2",
+  "2022-datacenter-azure-edition-core",
+  "2022-datacenter-azure-edition-core-smalldisk",
+  "2022-datacenter-core",
+  "2022-datacenter-core-g2",
+  "2022-datacenter-core-smalldisk",
+  "2022-datacenter-core-smalldisk-g2",
+  "windows-server-2022-azure-edition-preview-core",
+  "windows-server-vnext-azure-edition-core",
+  "ws2016-dotnetcore",
+  "ws2016-dotnetcore-2-1",
+  "ws2016-dotnetcore-2-2",
+  "ws2019-dotnetcore",
+  "ws2019-dotnetcore-2-1",
+  "ws2019-dotnetcore-2-2"
+]
+
+````
+or a similar result without jq in bash:
+
+````bash
+
+az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')].sku" -o tsv --all | sort -u
+2016-datacenter-server-core-g2
+2016-datacenter-server-core-smalldisk-g2
+2019-datacenter-core-g2
+2019-datacenter-core-smalldisk-g2
+2022-datacenter-azure-edition-core
+2022-datacenter-azure-edition-core-smalldisk
+2022-datacenter-core
+2022-datacenter-core-g2
+2022-datacenter-core-smalldisk
+2022-datacenter-core-smalldisk-g2
+windows-server-2022-azure-edition-preview-core
+windows-server-vnext-azure-edition-core
+ws2016-dotnetcore
+ws2016-dotnetcore-2-1
+ws2016-dotnetcore-2-2
+ws2019-dotnetcore
+ws2019-dotnetcore-2-1
+ws2019-dotnetcore-2-2
+
+````
+
+The workaround to this is either:
+
+1. Use a different sku e.g. `2022-datacenter-core`.
+
+2. Register the preview feature.
+
+````bash
+
+# show status of feature
+# az feature show --name InGuestAutoPatchVmssUniformPreview --namespace Microsoft.Compute
+# {
+#   "id": "/subscriptions/a8c27268-334c-4f00-bbe7-85cf2223dad3/providers/Microsoft.Features/providers/Microsoft.Compute/features/InGuestAutoPatchVmssUniformPreview",
+#   "name": "Microsoft.Compute/InGuestAutoPatchVmssUniformPreview",
+#   "properties": {
+#     "state": "NotRegistered"
+#   },
+#   "type": "Microsoft.Features/providers/features"
+# }
+
+az feature register --name InGuestAutoPatchVmssUniformPreview --namespace Microsoft.Compute
+
+# unregister
+# az feature register --name InGuestAutoPatchVmssUniformPreview --namespace Microsoft.Compute
+
+````
+
+For more details ee: [Hotpatch for virtual machines](https://learn.microsoft.com/en-us/windows-server/get-started/hotpatch)
+
 [scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents

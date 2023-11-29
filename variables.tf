@@ -226,3 +226,33 @@ variable "vmss_se_settings_data" {
   description = "The base64 encoded data to use as the script for the VMSS custom script extension"
   default     = null
 }
+
+variable "vmss_win_se_settings" {
+  type        = string
+  description = "The value to pass to the Windows VMSS custom script extension"
+  default     = null
+}
+
+variable "vmss_win_se_settings_script" {
+  type        = string
+  description = "The path of the file to use as the script for the Windows VMSS custom script extension"
+  default     = "scripts/Start-VmssConfig.ps1"
+}
+
+variable "vmss_win_se_settings_data" {
+  type        = string
+  description = "The base64 encoded data to use as the script for the Windows VMSS custom script extension"
+  default     = "scripts/Set-VmssConfig.ps1"
+}
+
+variable "vmss_auto_upgrade_minor_version" {
+  type        = string
+  description = "Specifies whether or not to use the latest minor version available"
+  default     = true
+}
+
+variable "vmss_enable_automatic_updates" {
+  type        = string
+  description = "Are automatic updates enabled for this Virtual Machine? (Windows)"
+  default     = null
+}

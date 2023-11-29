@@ -12,7 +12,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   disable_password_authentication = local.disable_password_authentication
   source_image_id                 = var.vmss_source_image_id
   tags                            = var.tags
-  custom_data                     = var.vmss_custom_data
+  custom_data                     = local.custom_data
   user_data                       = var.vmss_user_data
   zones                           = var.vmss_zones
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
@@ -92,11 +92,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   dynamic "extension" {
     for_each = var.vmss_se_enabled ? [1] : []
     content {
-      name                 = "vmss_se"
-      publisher            = "Microsoft.Azure.Extensions"
-      type                 = "CustomScript"
-      type_handler_version = "2.0"
-      settings             = local.vmss_se_settings
+      name                       = "vmss_se"
+      publisher                  = "Microsoft.Azure.Extensions"
+      type                       = "CustomScript"
+      type_handler_version       = "2.0"
+      auto_upgrade_minor_version = var.vmss_auto_upgrade_minor_version
+      settings                   = local.vmss_se_settings
     }
   }
 }
@@ -105,6 +106,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   count                      = var.vmss_os == "windows" ? 1 : 0
   name                       = var.vmss_name
   computer_name_prefix       = var.vmss_computer_name_prefix
+  enable_automatic_updates   = var.vmss_enable_automatic_updates
   resource_group_name        = var.vmss_resource_group_name
   location                   = var.vmss_location
   sku                        = var.vmss_sku
@@ -114,7 +116,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   admin_password             = var.vmss_admin_password
   source_image_id            = var.vmss_source_image_id
   tags                       = var.tags
-  custom_data                = var.vmss_custom_data
+  custom_data                = local.custom_data
   user_data                  = var.vmss_user_data
   zones                      = var.vmss_zones
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
@@ -186,11 +188,13 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   dynamic "extension" {
     for_each = var.vmss_se_enabled ? [1] : []
     content {
-      name                 = "vmss_se"
-      publisher            = "Microsoft.Azure.Extensions"
-      type                 = "CustomScriptExtension"
-      type_handler_version = "1.10"
-      settings             = local.vmss_se_settings
+      # az vm extension image list-versions --location uksouth --publisher Microsoft.Compute --name CustomScriptExtension --output table
+      name                       = "vmss_se"
+      publisher                  = "Microsoft.Compute"
+      type                       = "CustomScriptExtension"
+      type_handler_version       = "1.10"
+      auto_upgrade_minor_version = var.vmss_auto_upgrade_minor_version
+      settings                   = local.vmss_se_settings
     }
   }
 }

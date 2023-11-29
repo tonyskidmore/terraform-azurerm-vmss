@@ -25,11 +25,16 @@ resource "azurerm_subnet" "agents" {
 module "vmss" {
   # source                   = "tonyskidmore/vmss/azurerm"
   # version                  = "0.4.0"
-  source                    = "../../"
-  vmss_os                   = var.vmss_os
-  vmss_name                 = var.vmss_name
-  vmss_computer_name_prefix = var.vmss_computer_name_prefix
-  vmss_resource_group_name  = var.vmss_resource_group_name
-  vmss_subnet_id            = azurerm_subnet.agents.id
-  vmss_admin_password       = var.vmss_admin_password
+  source                        = "../../"
+  vmss_os                       = var.vmss_os
+  vmss_name                     = var.vmss_name
+  vmss_computer_name_prefix     = var.vmss_computer_name_prefix
+  vmss_resource_group_name      = var.vmss_resource_group_name
+  vmss_subnet_id                = azurerm_subnet.agents.id
+  vmss_admin_password           = var.vmss_admin_password
+  vmss_enable_automatic_updates = var.vmss_enable_automatic_updates
+  vmss_se_enabled               = var.vmss_se_enabled
+  vmss_user_data                = base64encode(var.vmss_user_data)
+  vmss_win_se_settings_script   = var.vmss_win_se_settings_script
+  vmss_win_se_settings_data     = var.vmss_win_se_settings_data
 }

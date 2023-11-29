@@ -9,10 +9,29 @@ locals {
   # https://www.skidmore.co.uk/post/2022_04_20_azure_devops_vmss_agents_part2/#path-issue
   # other scripts can be added to the module and used or base64 content can be passed in via var.vmss_se_settings_data
   # first non-empty value will be returned
+
+  # See:
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/custom-data
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service
   vmss_se_settings = (
     var.vmss_os == "linux" ?
-    jsonencode({ "script" : coalesce(var.vmss_se_settings_data, filebase64("${path.module}/${var.vmss_se_settings_script}")) }) :
-    jsonencode({ "script" : coalesce(var.vmss_se_settings_data, filebase64("${path.module}/${var.vmss_se_settings_script}")) })
+    jsonencode({ "script" = coalesce(var.vmss_se_settings_data, filebase64("${path.module}/${var.vmss_se_settings_script}")) }) :
+    jsonencode({ "commandToExecute" = "PowerShell -ExecutionPolicy Unrestricted -EncodedCommand ${textencodebase64(
+    file("${path.module}/${var.vmss_win_se_settings_script}"), "UTF-16LE")}" })
+    # coalesce(jsonencode(var.vmss_win_se_settings), jsonencode(
+    #                                               { "commandToExecute" = "PowerShell -ExecutionPolicy Unrestricted -EncodedCommand ${textencodebase64(
+    #                                                 file("${path.module}/${var.vmss_win_se_settings_script}"),"UTF-16LE")}" })
+    # )
+  )
+
+  custom_data = (
+    var.vmss_os == "linux" ?
+    var.vmss_custom_data :
+    (
+      var.vmss_se_enabled == true ?
+      coalesce(var.vmss_custom_data, filebase64("${path.module}/${var.vmss_win_se_settings_data}")) :
+      null
+    )
   )
 
   source_images = {
@@ -25,13 +44,14 @@ locals {
     "windows" = {
       offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
       publisher = coalesce(var.vmss_source_image_offer, "MicrosoftWindowsServer"),
-      sku       = coalesce(var.vmss_source_image_offer, "2022-datacenter-azure-edition-core"),
-      version   = coalesce(var.vmss_source_image_offer, "latest")
+      sku       = coalesce(var.vmss_source_image_offer, "2022-datacenter-core"),
+      # sku       = coalesce(var.vmss_source_image_offer, "2019-Datacenter-Core"),
+      version = coalesce(var.vmss_source_image_offer, "latest")
     }
     # "windows" = {
     #   offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
     #   publisher = coalesce(var.vmss_source_image_offer, "MicrosoftWindowsServer"),
-    #   sku       = coalesce(var.vmss_source_image_offer, "2019-datacenter-core-g2"),
+    #   sku       = coalesce(var.vmss_source_image_offer, "ws2019-dotnetcore-2-2"),
     #   version   = coalesce(var.vmss_source_image_offer, "latest")
   }
 }
@@ -42,26 +62,3 @@ locals {
 # az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" | jq -r '[(.[].sku )] | unique'
 # az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" --all | jq -r '[(.[].sku )] | unique'
 
-# variable "vmss_source_image_offer" {
-#   description = "Azure Virtual Machine Scale Set Source Image Offer"
-#   type        = string
-#   default     = "0001-com-ubuntu-server-focal"
-# }
-
-# variable "vmss_source_image_publisher" {
-#   description = "Azure Virtual Machine Scale Set Source Image Publisher"
-#   type        = string
-#   default     = "Canonical"
-# }
-
-# variable "vmss_source_image_sku" {
-#   description = "Azure Virtual Machine Scale Set Source Image SKU"
-#   type        = string
-#   default     = "20_04-lts"
-# }
-
-# variable "vmss_source_image_version" {
-#   description = "Azure Virtual Machine Scale Set Source Image Version"
-#   type        = string
-#   default     = "latest"
-# }
