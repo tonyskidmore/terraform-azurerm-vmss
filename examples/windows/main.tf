@@ -37,4 +37,5 @@ module "vmss" {
   vmss_user_data                = base64encode(var.vmss_user_data)
   vmss_win_se_settings_script   = var.vmss_win_se_settings_script
   vmss_win_se_settings_data     = var.vmss_win_se_settings_data
+  vmss_win_se_settings          = var.vmss_win_se_settings
 }

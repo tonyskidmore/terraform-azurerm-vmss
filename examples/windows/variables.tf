@@ -88,3 +88,9 @@ variable "vmss_win_se_settings_data" {
   description = "The base64 encoded data to use as the script for the Windows VMSS custom script extension"
   default     = "scripts/Set-VmssConfig.ps1"
 }
+
+variable "vmss_win_se_settings" {
+  type        = string
+  description = "The value to pass to the Windows VMSS custom script extension"
+  default     = null
+}

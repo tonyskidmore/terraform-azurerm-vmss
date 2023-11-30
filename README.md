@@ -114,6 +114,35 @@ module "vmss" {
 
 <!-- END_TF_DOCS -->
 
+## Troubleshooting
+
+### Windows
+
+Use the Serial console in the portal or via the Azure CLI:
+
+````bash
+
+# specify the VMSS name (-n), Resource group (-g) and instance number (e.g. 0)
+az serial-console connect -n vmss-win-ado-001 -g rg-vmss-win-001 --instance-id 0
+
+````
+
+````bash
+
+cmd
+ch
+ch -si 1
+
+Please enter login credentials.
+?Username: ?adminuser
+Domain  : ?
+Password: ?********************
+
+````
+
+
+
+
 ## Known issues
 
 ### windowsConfiguration.patchSettings.patchMode not valid

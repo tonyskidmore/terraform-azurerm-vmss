@@ -1,6 +1,6 @@
 locals {
 
-  # TODO: probably need to do something about this
+  # Linux only - admin_password is required on Windows
   disable_password_authentication = var.vmss_admin_password == null ? true : false
 
   # TODO: do something about Windows script
@@ -16,14 +16,15 @@ locals {
   vmss_se_settings = (
     var.vmss_os == "linux" ?
     jsonencode({ "script" = coalesce(var.vmss_se_settings_data, filebase64("${path.module}/${var.vmss_se_settings_script}")) }) :
+    var.vmss_win_se_settings != null ?
+    var.vmss_win_se_settings :
     jsonencode({ "commandToExecute" = "PowerShell -ExecutionPolicy Unrestricted -EncodedCommand ${textencodebase64(
     file("${path.module}/${var.vmss_win_se_settings_script}"), "UTF-16LE")}" })
-    # coalesce(jsonencode(var.vmss_win_se_settings), jsonencode(
-    #                                               { "commandToExecute" = "PowerShell -ExecutionPolicy Unrestricted -EncodedCommand ${textencodebase64(
-    #                                                 file("${path.module}/${var.vmss_win_se_settings_script}"),"UTF-16LE")}" })
-    # )
   )
 
+  # custom_data is used to transfer script content to the VMSS instances in Windows
+  # and this defaults to the value of var.vmss_win_se_settings_data e.g. scripts/Set-VmssConfig.ps1
+  # the custom script extension runs the var.vmss_win_se_settings_script command to launch the custom data script
   custom_data = (
     var.vmss_os == "linux" ?
     var.vmss_custom_data :
@@ -34,6 +35,7 @@ locals {
     )
   )
 
+  # defaults based on vmss_os
   source_images = {
     "linux" = {
       offer     = coalesce(var.vmss_source_image_offer, "0001-com-ubuntu-server-focal"),
@@ -45,14 +47,8 @@ locals {
       offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
       publisher = coalesce(var.vmss_source_image_offer, "MicrosoftWindowsServer"),
       sku       = coalesce(var.vmss_source_image_offer, "2022-datacenter-core"),
-      # sku       = coalesce(var.vmss_source_image_offer, "2019-Datacenter-Core"),
       version = coalesce(var.vmss_source_image_offer, "latest")
     }
-    # "windows" = {
-    #   offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
-    #   publisher = coalesce(var.vmss_source_image_offer, "MicrosoftWindowsServer"),
-    #   sku       = coalesce(var.vmss_source_image_offer, "ws2019-dotnetcore-2-2"),
-    #   version   = coalesce(var.vmss_source_image_offer, "latest")
   }
 }
 
@@ -61,4 +57,4 @@ locals {
 # az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, '2019')]" | jq -r '[(.[].sku )] | unique'
 # az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" | jq -r '[(.[].sku )] | unique'
 # az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" --all | jq -r '[(.[].sku )] | unique'
-
+# IMDS .compute.storageProfile.imageReference.version

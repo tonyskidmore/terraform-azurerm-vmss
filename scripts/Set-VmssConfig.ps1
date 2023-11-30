@@ -1,7 +1,81 @@
 $ProgressPreference = 'SilentlyContinue'
 
-Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+function Get-Imds {
+  Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | ConvertTo-Json -Depth 64
+}
 
-Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
+funtion Install-AzPowershellModule {
+  $AzModule = Get-Module -ListAvailable -Name Az -ErrorAction SilentlyContinue
+  if ($null -eq $AzModule) {
+      Write-Host "Installing Az PowerShell Module..."
+      Install-Module -Name Az -Scope AllUsers -Force
+  }
+}
 
-Remove-Item .\AzureCLI.msi
+function Install-AzureCli {
+    $AzureCli = Get-Command az -ErrorAction SilentlyContinue
+    if ($null -eq $AzureCli) {
+        Write-Host "Installing Azure CLI..."
+        Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+        Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
+        Remove-Item .\AzureCLI.msi
+    }
+}
+function Install-Docker {
+  # https://learn.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment?tabs=dockerce#windows-server-1
+  Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
+  .\install-docker-ce.ps1
+}
+
+function Install-Pwsh {
+  $Pwsh = Get-Command pwsh -ErrorAction SilentlyContinue
+  if ($null -eq $Pwsh) {
+      Write-Host "Installing PowerShell Core..."
+      Invoke-WebRequest -Uri https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/PowerShell-7.4.0-win-x64.msi -OutFile .\PowerShell-7.4.0-win-x64.msi
+      Start-Process msiexec.exe -Wait -ArgumentList '/package PowerShell-7.4.0-win-x64.msi /quiet REGISTER_MANIFEST=1 USE_MU=1 ENABLE_MU=1 ADD_PATH=1'
+      Remove-Item .\PowerShell-7.4.0-win-x64.msi
+  }
+}
+
+function Install-Terraform {
+  param(
+    [string]$Version = "latest"
+  )
+
+  $SaveToPath = "C:\Program Files\terraform"
+  $Terraform= Get-Command terraform -ErrorAction SilentlyContinue
+  if ($null -eq $Terraform) {
+      Write-Host "Installing Terraform..."
+      if ($Version -eq "latest") {
+        $releasesUrl = 'https://api.github.com/repos/hashicorp/terraform/releases'
+        $releases = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $releasesUrl
+        $Version = $releases.Where({!$_.prerelease})[0].name.trim('v')
+        Write-Host "Latest Terraform version is $Version"
+      }
+      $terraformFile = "terraform_${Version}_windows_amd64.zip"
+      $terraformURL = "https://releases.hashicorp.com/terraform/${Version}/${terraformFile}"
+
+      $download = Invoke-WebRequest -UseBasicParsing -Uri $terraformURL -DisableKeepAlive -OutFile "${env:Temp}\${terraformFile}" -ErrorAction SilentlyContinue -PassThru
+
+      if (($download.StatusCode -eq 200) -and (Test-Path "${env:Temp}\${terraformFile}")) {
+        Unblock-File "${env:Temp}\${terraformFile}"
+        Start-Sleep -Seconds 10
+        Expand-Archive -Path "${env:Temp}\${terraformFile}" -DestinationPath $SaveToPath -Force
+
+        Remove-Item -Path "${env:Temp}\${terraformFile}" -Force
+
+        Write-Host "Terraform version $Version installed to $SaveToPath"
+
+        # Save the path to the Terraform executable permanently to the PATH environment variable
+        $path = [Environment]::GetEnvironmentVariable('Path','User')
+        [Environment]::SetEnvironmentVariable('PATH', "${path};${SaveToPath}", 'User')
+      }
+  }
+}
+
+Get-Imds | Out-File -FilePath "C:\AzureData\IMDS.json"
+Install-AzPowershellModule
+Install-AzureCli
+Install-Pwsh
+Install-Docker
+Install-Terraform
