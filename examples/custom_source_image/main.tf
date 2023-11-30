@@ -103,8 +103,9 @@ resource "azurerm_subnet_network_security_group_association" "nsg-rule" {
 }
 
 module "vmss" {
-  source                                      = "tonyskidmore/vmss/azurerm"
-  version                                     = "0.3.2"
+  # source                                      = "tonyskidmore/vmss/azurerm"
+  # version                                     = "0.4.0"
+  source                                      = "../../"
   vmss_name                                   = var.vmss_name
   vmss_resource_group_name                    = var.vmss_resource_group_name
   vmss_subnet_id                              = azurerm_subnet.agents.id

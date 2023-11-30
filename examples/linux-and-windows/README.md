@@ -1,6 +1,6 @@
 # Azure Virtual Machine Scale Set
 
-Example of creating a Windows Azure VMSS.
+Example of creating both Windows and Linux Azure VMSS the Azure CLI installed on both.
 
 <!-- BEGIN_TF_DOCS -->
 
