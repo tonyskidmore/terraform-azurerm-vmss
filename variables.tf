@@ -235,7 +235,7 @@ variable "vmss_win_se_settings" {
 
 variable "vmss_win_se_settings_script" {
   type        = string
-  description = "The path of the file to use as the script for the Windows VMSS custom script extension"
+  description = "The path of the file to use as the caller script for the Windows VMSS custom script extension"
   default     = "scripts/Start-VmssConfig.ps1"
 }
 

@@ -93,9 +93,12 @@ function Install-Terraform {
 
 Get-Imds | Out-File -FilePath "C:\AzureData\IMDS.json"
 
-$userData = Get-UserData | ConvertFrom-Json
+$userData = Get-UserData
+$userData | Out-File -FilePath "C:\AzureData\userData.txt"
 
-foreach ($install in $userData.install) {
+$userDataObj = $userData | ConvertFrom-Json
+
+foreach ($install in $userDataObj.install) {
   Write-Host "Calling function Install-$($install)..."
   & "Install-$($install)"
 }
