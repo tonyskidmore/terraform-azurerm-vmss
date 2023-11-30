@@ -34,7 +34,8 @@ module "vmss" {
   vmss_admin_password           = var.vmss_admin_password
   vmss_enable_automatic_updates = var.vmss_enable_automatic_updates
   vmss_se_enabled               = var.vmss_se_enabled
-  vmss_user_data                = base64encode(var.vmss_user_data)
+  # vmss_user_data                = base64encode(var.vmss_user_data)
+  vmss_user_data                = filebase64("${path.module}/user_data.json")
   vmss_win_se_settings_script   = var.vmss_win_se_settings_script
   vmss_win_se_settings_data     = var.vmss_win_se_settings_data
   vmss_win_se_settings          = var.vmss_win_se_settings
