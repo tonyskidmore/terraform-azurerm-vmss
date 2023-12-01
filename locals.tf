@@ -46,7 +46,7 @@ locals {
       offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
       publisher = coalesce(var.vmss_source_image_publisher, "MicrosoftWindowsServer"),
       sku       = coalesce(var.vmss_source_image_sku, "2022-datacenter-core"),
-      version = coalesce(var.vmss_source_image_version, "latest")
+      version   = coalesce(var.vmss_source_image_version, "latest")
     }
   }
 }
