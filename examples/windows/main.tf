@@ -25,17 +25,17 @@ resource "azurerm_subnet" "agents" {
 module "vmss" {
   # source                   = "tonyskidmore/vmss/azurerm"
   # version                  = "0.4.0"
-  source                        = "../../"
-  vmss_os                       = var.vmss_os
-  vmss_name                     = var.vmss_name
-  vmss_computer_name_prefix     = var.vmss_computer_name_prefix
-  vmss_resource_group_name      = var.vmss_resource_group_name
-  vmss_subnet_id                = azurerm_subnet.agents.id
-  vmss_admin_password           = var.vmss_admin_password
-  vmss_se_enabled               = var.vmss_se_enabled
+  source                    = "../../"
+  vmss_os                   = var.vmss_os
+  vmss_name                 = var.vmss_name
+  vmss_computer_name_prefix = var.vmss_computer_name_prefix
+  vmss_resource_group_name  = var.vmss_resource_group_name
+  vmss_subnet_id            = azurerm_subnet.agents.id
+  vmss_admin_password       = var.vmss_admin_password
+  vmss_se_enabled           = var.vmss_se_enabled
   # passing user_data that contains a JSON configuration for installs
-  vmss_user_data                = filebase64("${path.module}/user_data.json")
-  vmss_win_se_settings_script   = var.vmss_win_se_settings_script
-  vmss_win_se_settings_data     = var.vmss_win_se_settings_data
-  vmss_win_se_settings          = var.vmss_win_se_settings
+  vmss_user_data              = filebase64("${path.module}/user_data.json")
+  vmss_win_se_settings_script = var.vmss_win_se_settings_script
+  vmss_win_se_settings_data   = var.vmss_win_se_settings_data
+  vmss_win_se_settings        = var.vmss_win_se_settings
 }

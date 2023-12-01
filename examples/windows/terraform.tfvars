@@ -9,4 +9,4 @@ vmss_vnet_name               = "vnet-azdo-agents-01"
 vmss_vnet_address_space      = ["192.168.0.0/24"]
 vmss_admin_password          = "Sup3rS3cr3tP@55w0rd!"
 # the custom script extension functionality needs to be explicilty enabled
-vmss_se_enabled              = true
+vmss_se_enabled = true
