@@ -2,6 +2,19 @@
 
 Example of creating a Windows Azure VMSS.
 
+The example shows how various deployment setting options _could_ be used to piece together an installation mechanism on Windows in Azure.  
+It serves as an example of using the [Custom Script Extension (CSE)](https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows), [custom_data](https://learn.microsoft.com/en-us/azure/virtual-machines/custom-data#pass-custom-data-to-the-vm), [IMDS](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service) and [user_data](https://learn.microsoft.com/en-us/azure/virtual-machines/user-data) together 
+
+The files that are used are listed in the table below.
+
+| Module file resource             | Description                                                                                              |
+|----------------------------------|----------------------------------------------------------------------------------------------------------|
+| scripts/Set-VmssConfig.ps1       | An example PowerShell script with functions for installing tools, it is created as `custom_data`         |
+| scripts/Start-VmssConfig.ps1     | A PowerShell script that takes the custom_data and executes it by means of the CSE                       |
+| examples/windows/user_data.json  | A JSON file that contains instructions on which installer functions should be run, passed as `user_data` |
+
+_Note:_  Adding tools during instance deployment extends the time it takes an instance to come ready, at some point a custom image with all requirements baked in becomes a better option.
+
 <!-- BEGIN_TF_DOCS -->
 
 ## Requirements

@@ -3,8 +3,7 @@ locals {
   # Linux only - admin_password is required on Windows
   disable_password_authentication = var.vmss_admin_password == null ? true : false
 
-  # TODO: do something about Windows script
-  # we are assuming that if the azurerm_virtual_machine_scale_set_extension is enabled (var.vmss_se_enabled)
+  # On Linux, we are assuming that if the azurerm_virtual_machine_scale_set_extension is enabled (var.vmss_se_enabled)
   # we want to run the script specified, defaulting to resolving the path issue as per:
   # https://www.skidmore.co.uk/post/2022_04_20_azure_devops_vmss_agents_part2/#path-issue
   # other scripts can be added to the module and used or base64 content can be passed in via var.vmss_se_settings_data
@@ -45,16 +44,9 @@ locals {
     },
     "windows" = {
       offer     = coalesce(var.vmss_source_image_offer, "WindowsServer"),
-      publisher = coalesce(var.vmss_source_image_offer, "MicrosoftWindowsServer"),
-      sku       = coalesce(var.vmss_source_image_offer, "2022-datacenter-core"),
-      version = coalesce(var.vmss_source_image_offer, "latest")
+      publisher = coalesce(var.vmss_source_image_publisher, "MicrosoftWindowsServer"),
+      sku       = coalesce(var.vmss_source_image_sku, "2022-datacenter-core"),
+      version = coalesce(var.vmss_source_image_version, "latest")
     }
   }
 }
-
-# az vm image list --publisher MicrosoftWindowsServer --query "[?version=='latest']"
-# az vm image list --publisher MicrosoftWindowsServer --all --query "[?contains(sku, 'core')]"
-# az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, '2019')]" | jq -r '[(.[].sku )] | unique'
-# az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" | jq -r '[(.[].sku )] | unique'
-# az vm image list --publisher MicrosoftWindowsServer --query "[?contains(sku, 'core')]" --all | jq -r '[(.[].sku )] | unique'
-# IMDS .compute.storageProfile.imageReference.version

@@ -10,5 +10,3 @@ vmss_vnet_address_space      = ["192.168.0.0/24"]
 vmss_admin_password          = "Sup3rS3cr3tP@55w0rd!"
 # the custom script extension functionality needs to be explicilty enabled
 vmss_se_enabled              = true
-# settings can be set directly to override the default behaviour
-# vmss_win_se_settings         = "{\"fileUris\": [\"https://raw.githubusercontent.com/tonyskidmore/azure-customscriptextension-scripts/main/Install-Pwsh.ps1\"], \"commandToExecute\": \"powershell -ExecutionPolicy Unrestricted -File Install-Pwsh.ps1\"}"

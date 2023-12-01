@@ -1,0 +1,62 @@
+---
+
+# An example Azure Pipelines YAML template that might be used to test the Windows VMSS deployment.
+
+trigger: none
+
+pool:
+  name: winvmss
+
+steps:
+
+- script: |
+    set
+  displayName: 'Debug environment'
+
+- powershell: |
+    $json=$(Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | ConvertTo-Json -Depth 64)
+    Write-Host $json
+    $imds = $json | ConvertFrom-Json
+    Write-Output "Azure Image Reference: $($imds.compute.storageProfile.imageReference.version)"
+  displayName: 'Show IMDS'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'Get-Host'
+    pwsh: true
+    ignoreLASTEXITCODE: true
+  displayName: 'PowerShell core'
+
+- powershell: |
+    Get-Module -ListAvailable
+  displayName: 'PowerShell modules'
+
+- script: |
+    dotnet --list-sdks
+  displayName: '.NET sdks'
+
+- script: |
+    dotnet --list-runtimes
+  displayName: '.NET runtimes'
+
+- script: |
+    dir C:\AzureData
+    dir C:\
+  displayName: "Check files"
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'azurerm-oidc'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'Get-Module -ListAvailable'
+  displayName: 'Azure CLI pwsh'
+
+- powershell: |
+    Get-Content -Path C:\WindowsAzure\Logs\Set-VmssInstance.log -ErrorAction SilentlyContinue
+  displayName: 'Get Set-VmssInstance.log'
+
+- script: |
+    terraform --version
+  displayName: "Terraform"

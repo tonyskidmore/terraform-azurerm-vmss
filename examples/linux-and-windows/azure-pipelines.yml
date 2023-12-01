@@ -1,0 +1,50 @@
+---
+
+# An example Azure Pipelines YAML template that might be used to test the Linux and Windows VMSS deployments.
+
+parameters:
+  - name: pool
+    type: string
+    values:
+      - winvmss
+      - linvmss
+    default: winvmss
+    displayName: Pool name
+
+trigger: none
+
+jobs:
+- job: 'VMSS_Test'
+  pool:
+    name: ${{ parameters.pool }}
+
+  steps:
+
+  - script: |
+      az --version
+    displayName: 'Azure CLI'
+
+  - powershell: |
+      $json=$(Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | ConvertTo-Json -Depth 64)
+      Write-Host $json
+      $imds = $json | ConvertFrom-Json
+      Write-Output "Azure Image Reference: $($imds.compute.storageProfile.imageReference.version)"
+    displayName: 'Show IMDS on Windows'
+    condition: ne(variables['Agent.OS'], 'Linux')
+
+  - powershell: |
+      Get-ComputerInfo
+    displayName: 'Windows OS Details'
+    condition: ne(variables['Agent.OS'], 'Linux')
+
+  - script: |
+      json=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | jq)
+      echo "$json"
+      printf "Azure Image Reference: %s\n" "$(jq -r '.compute.storageProfile.imageReference.version' <<< $json)"
+    displayName: 'Show IMDS on Linux'
+    condition: eq(variables['Agent.OS'], 'Linux')
+
+  - script: |
+      cat /etc/os-release
+    displayName: 'Linux OS Details'
+    condition: eq(variables['Agent.OS'], 'Linux')

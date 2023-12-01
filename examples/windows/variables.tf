@@ -50,12 +50,6 @@ variable "vmss_admin_password" {
   description = "Password to allocate to the admin user account"
 }
 
-variable "vmss_enable_automatic_updates" {
-  type        = string
-  description = "Are automatic updates enabled for this Virtual Machine? (Windows)"
-  default     = null
-}
-
 variable "tags" {
   type        = map(string)
   description = "Map of the tags to use for the resources that are deployed"

@@ -188,7 +188,6 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   dynamic "extension" {
     for_each = var.vmss_se_enabled ? [1] : []
     content {
-      # az vm extension image list-versions --location uksouth --publisher Microsoft.Compute --name CustomScriptExtension --output table
       name                       = "vmss_se"
       publisher                  = "Microsoft.Compute"
       type                       = "CustomScriptExtension"

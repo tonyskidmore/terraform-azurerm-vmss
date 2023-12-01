@@ -89,6 +89,7 @@ variable "vmss_admin_username" {
 variable "vmss_admin_password" {
   type        = string
   description = "Azure Virtual Machine Scale Set instance administrator password"
+  sensitive   = true
   default     = null
 }
 

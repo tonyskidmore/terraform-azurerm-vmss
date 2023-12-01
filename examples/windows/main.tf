@@ -32,7 +32,6 @@ module "vmss" {
   vmss_resource_group_name      = var.vmss_resource_group_name
   vmss_subnet_id                = azurerm_subnet.agents.id
   vmss_admin_password           = var.vmss_admin_password
-  vmss_enable_automatic_updates = var.vmss_enable_automatic_updates
   vmss_se_enabled               = var.vmss_se_enabled
   # passing user_data that contains a JSON configuration for installs
   vmss_user_data                = filebase64("${path.module}/user_data.json")

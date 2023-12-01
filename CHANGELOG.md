@@ -2,6 +2,10 @@
 
 [keepachangelog](https://keepachangelog.com/en/1.0.0/)
 
+## [0.4.0]
+* Added initial Windows support
+* Added `windows` and `linux-and-windows` examples
+
 ## [0.3.2]
 * Added `user_data` argument
 

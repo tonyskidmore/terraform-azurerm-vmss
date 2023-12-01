@@ -1,6 +1,8 @@
 # Azure Virtual Machine Scale Set
 
-Example of creating both Windows and Linux Azure VMSS the Azure CLI installed on both.
+Example of creating both Windows Server 2019 and Ubuntu Linux 22.04 Azure VMSS with the Azure CLI installed on both.
+
+For Linux the Azure CLI will be installed with `cloud-init` and for Windows the Custom Script Extension is used, along with some supplied custom settings.
 
 <!-- BEGIN_TF_DOCS -->
 
