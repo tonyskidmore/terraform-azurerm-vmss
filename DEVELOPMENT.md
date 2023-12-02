@@ -1,16 +1,30 @@
 # Development
 
-The code
+The GitHub Actions workflow does some basic linting as defined in: `.github/workflows/ci.yml`.
+
+The workflow actions can be replicated locally during development as per the sections below.
 
 ## pre-commit
 
-Dev Containers: Re
+In VSCode Dev Containers: Re
+
+````bash
+
+pre-commit install
+
+pre-commit install-hooks
+
+````
+
+Pre-commit hooks should now kick in when making local commit.
 
 ## GitHub Super-Linter
 
 Download the super-linter container image: `docker pull ghcr.io/super-linter/super-linter:latest`.
 
 > Note uses `.github/super-linter.env` for shared local/GitHub Actions scanning configuration.
+
+Perform the scanning [locally][gha-super-linter-local], for example:
 
 ````bash
 
