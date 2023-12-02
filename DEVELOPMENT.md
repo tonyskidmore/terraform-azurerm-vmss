@@ -6,7 +6,9 @@ The workflow actions can be replicated locally during development as per the sec
 
 ## pre-commit
 
-In VSCode Dev Containers: Re
+When [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers) has been enabled, in VSCode open  `Dev Containers: Reopen in Container`.
+
+Pre-commit hooks should be installed automatically but if not run:
 
 ````bash
 
