@@ -6,22 +6,26 @@ administrator password as opposed to an SSH key pair
 
 <!-- BEGIN_TF_DOCS -->
 
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 1.0.0 |
 | azurerm | >=3.1.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.39.1 |
+| azurerm | 3.83.0 |
+
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | tonyskidmore/vmss/azurerm | 0.3.2 |
+| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -36,11 +40,14 @@ administrator password as opposed to an SSH key pair
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
 | vmss\_vnet\_address\_space | Vnet network address spaces | `list(string)` | n/a | yes |
 | vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | vmss\_id | Virtual Machine Scale Set ID |
+
+
 
 Example
 
@@ -71,7 +78,7 @@ resource "azurerm_subnet" "agents" {
 
 module "vmss" {
   source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.3.2"
+  version                  = "0.4.0"
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = azurerm_subnet.agents.id

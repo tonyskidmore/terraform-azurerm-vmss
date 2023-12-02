@@ -1,6 +1,6 @@
 ---
 
-formatter: "markdown table" # this is required
+formatter: "markdown table"  # this is required
 
 version: ""
 
@@ -12,17 +12,24 @@ recursive:
   path: modules
 
 sections:
-  hide: [ ]
-  show: [ ]
+  hide: []
+  show: []
 
 content: |-
   {{ .Header }}
+
   {{ .Requirements }}
+
   {{ .Providers }}
+
   {{ .Modules }}
+
   {{ .Inputs }}
+
   {{ .Outputs }}
+
   {{ .Footer }}
+
   Example
 
   ```hcl

@@ -9,8 +9,6 @@
 			}
 	},
 	"remoteUser": "vscode",
-	// .pre-commit-<uuid> creates a unique cache directory in $HOME/.pre-commit for each project
-	// specify a new uuid per project e.g. using uuidgen
 	"mounts": [
 		"source=${localEnv:HOME}/.pre-commit-f828ad0b-aa5b-4925-8638-92532900f86c,target=/home/vscode/.pre-commit,type=bind,consistency=cached",
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
@@ -20,7 +18,6 @@
 	},
 	"postCreateCommand": "bash ./.devcontainer/init.sh",
 	"customizations": {
-		// Configure properties specific to VS Code.
 		"vscode": {
 			"extensions": [
 				"hashicorp.terraform",
