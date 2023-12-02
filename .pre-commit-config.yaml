@@ -17,11 +17,11 @@ repos:
     hooks:
       - id: checkov
         verbose: false
-        args: [ ]
+        args: []
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-  # Get the latest from:
-  # https://github.com/antonbabenko/pre-commit-terraform/releases
+    # Get the latest from:
+    # https://github.com/antonbabenko/pre-commit-terraform/releases
     rev: v1.76.0
     hooks:
       - id: terraform_fmt
@@ -31,8 +31,8 @@ repos:
       - id: terrascan
         args:
           - --args=--non-recursive
-          - --args=--skip-rules="AC_AZURE_0356" # avoids nsg test for simple admin_password example
-          - --args=--skip-rules="AC_AZURE_0389" # skip "Ensure that Azure Resource Group has resource lock enabled"
+          - --args=--skip-rules="AC_AZURE_0356"  # avoids nsg test for simple admin_password example
+          - --args=--skip-rules="AC_AZURE_0389"  # skip "Ensure that Azure Resource Group has resource lock enabled"
           - --args=--policy-type=azure
           - --args=--verbose
 
