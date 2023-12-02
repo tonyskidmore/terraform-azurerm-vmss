@@ -17,22 +17,26 @@ _Note:_  Adding tools during instance deployment extends the time it takes an in
 
 <!-- BEGIN_TF_DOCS -->
 
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 1.0.0 |
 | azurerm | >=3.1.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
 | azurerm | 3.83.0 |
+
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | ../../ | n/a |
+| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -52,11 +56,14 @@ _Note:_  Adding tools during instance deployment extends the time it takes an in
 | vmss\_win\_se\_settings | The value to pass to the Windows VMSS custom script extension | `string` | `null` | no |
 | vmss\_win\_se\_settings\_data | The base64 encoded data to use as the script for the Windows VMSS custom script extension | `string` | `"scripts/Set-VmssConfig.ps1"` | no |
 | vmss\_win\_se\_settings\_script | The path of the file to use as the script for the Windows VMSS custom script extension | `string` | `"scripts/Start-VmssConfig.ps1"` | no |
+
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | vmss\_id | Virtual Machine Scale Set ID |
+
+
 
 Example
 
@@ -86,9 +93,8 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  # source                   = "tonyskidmore/vmss/azurerm"
-  # version                  = "0.4.0"
-  source                    = "../../"
+  source                    = "tonyskidmore/vmss/azurerm"
+  version                   = "0.4.0"
   vmss_os                   = var.vmss_os
   vmss_name                 = var.vmss_name
   vmss_computer_name_prefix = var.vmss_computer_name_prefix

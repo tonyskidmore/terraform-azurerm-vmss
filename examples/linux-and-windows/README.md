@@ -6,22 +6,26 @@ For Linux the Azure CLI will be installed with `cloud-init` and for Windows the 
 
 <!-- BEGIN_TF_DOCS -->
 
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 1.0.0 |
 | azurerm | >=3.1.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
 | azurerm | 3.83.0 |
+
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | ../../ | n/a |
+| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -35,11 +39,14 @@ For Linux the Azure CLI will be installed with `cloud-init` and for Windows the 
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
 | vmss\_vnet\_address\_space | Vnet network address spaces | `list(string)` | n/a | yes |
 | vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | vmss\_id | Virtual Machine Scale Set ID |
+
+
 
 Example
 
@@ -71,9 +78,8 @@ resource "azurerm_subnet" "agents" {
 module "vmss" {
   for_each = var.vmss_deployments
 
-  # source                   = "tonyskidmore/vmss/azurerm"
-  # version                  = "0.4.0"
-  source                      = "../../"
+  source                      = "tonyskidmore/vmss/azurerm"
+  version                     = "0.4.0"
   vmss_os                     = each.key
   vmss_name                   = each.value.vmss_name
   vmss_computer_name_prefix   = each.value.vmss_computer_name_prefix

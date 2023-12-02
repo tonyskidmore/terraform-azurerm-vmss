@@ -8,6 +8,7 @@ You can learn more about and also create this image yourself by following along 
 
 <!-- BEGIN_TF_DOCS -->
 
+
 ## Requirements
 
 | Name | Version |
@@ -16,6 +17,7 @@ You can learn more about and also create this image yourself by following along 
 | azurerm | >=3.1.0 |
 | http | >=3.2.0 |
 | tls | ~>4.0 |
+
 ## Providers
 
 | Name | Version |
@@ -23,11 +25,13 @@ You can learn more about and also create this image yourself by following along 
 | azurerm | >=3.1.0 |
 | http | >=3.2.0 |
 | tls | ~>4.0 |
+
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | ../../ | n/a |
+| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -45,6 +49,7 @@ You can learn more about and also create this image yourself by following along 
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
 | vmss\_vnet\_address\_space | Vnet network address spaces | `list(string)` | n/a | yes |
 | vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
@@ -54,6 +59,8 @@ You can learn more about and also create this image yourself by following along 
 | source\_ip | Source IP address of Terraform execution |
 | tls\_private\_key | SSH privatte key |
 | vmss\_id | Virtual Machine Scale Set ID |
+
+
 
 Example
 
@@ -163,9 +170,8 @@ resource "azurerm_subnet_network_security_group_association" "nsg-rule" {
 }
 
 module "vmss" {
-  # source                                      = "tonyskidmore/vmss/azurerm"
-  # version                                     = "0.4.0"
-  source                                      = "../../"
+  source                                      = "tonyskidmore/vmss/azurerm"
+  version                                     = "0.4.0"
   vmss_name                                   = var.vmss_name
   vmss_resource_group_name                    = var.vmss_resource_group_name
   vmss_subnet_id                              = azurerm_subnet.agents.id

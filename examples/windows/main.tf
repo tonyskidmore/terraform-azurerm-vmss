@@ -23,9 +23,8 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  # source                   = "tonyskidmore/vmss/azurerm"
-  # version                  = "0.4.0"
-  source                    = "../../"
+  source                    = "tonyskidmore/vmss/azurerm"
+  version                   = "0.4.0"
   vmss_os                   = var.vmss_os
   vmss_name                 = var.vmss_name
   vmss_computer_name_prefix = var.vmss_computer_name_prefix
