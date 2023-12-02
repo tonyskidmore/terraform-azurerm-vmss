@@ -8,9 +8,9 @@ Dev Containers: Re
 
 ## GitHub Super-Linter
 
-`docker pull ghcr.io/super-linter/super-linter:latest`
+Download the super-linter container image: `docker pull ghcr.io/super-linter/super-linter:latest`.
 
-Uses `.github/super-linter.env` for shared local/GitHub Actions scanning.
+> Note uses `.github/super-linter.env` for shared local/GitHub Actions scanning configuration.
 
 ````bash
 
