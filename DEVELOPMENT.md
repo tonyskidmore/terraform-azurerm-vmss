@@ -33,7 +33,8 @@ Perform the scanning [locally][gha-super-linter-local], for example:
 docker run \
   -e ACTIONS_RUNNER_DEBUG=true \
   -e RUN_LOCAL=true \
-  -v "$HOME/github/terraform-azurerm-vmss":/tmp/lint \
+  --env-file ".github/super-linter.env" \
+  -v "$PWD":/tmp/lint \
   ghcr.io/super-linter/super-linter:latest
 
 ````
