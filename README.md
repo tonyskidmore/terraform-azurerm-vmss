@@ -123,6 +123,53 @@ module "vmss" {
 
 ## Troubleshooting
 
+### Linux
+
+Use the Serial console in the portal or via the Azure CLI to help troubleshoot deployment issues:
+
+````bash
+
+# Press enter to get a login
+vmss-agent-pool-linux-003000000 login: adminuser
+Password:
+
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.15.0-1052-azure x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Dec  2 13:18:05 UTC 2023
+
+  System load:  0.04              Processes:             122
+  Usage of /:   7.5% of 28.89GB   Users logged in:       0
+  Memory usage: 5%                IPv4 address for eth0: 192.168.0.4
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+2 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+
+````
+
+
 ### Windows
 
 Use the Serial console in the portal or via the Azure CLI to help troubleshoot deployment issues:
