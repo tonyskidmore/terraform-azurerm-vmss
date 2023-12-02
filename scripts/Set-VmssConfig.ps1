@@ -3,7 +3,6 @@ $ProgressPreference = 'SilentlyContinue'
 function ConvertFrom-Base64 {
   param(
     [Parameter(Mandatory = $true,
-    ValueFromPipeline = $true,
     Position = 0)]
     [string]$Base64String
   )
@@ -12,12 +11,12 @@ function ConvertFrom-Base64 {
   $utf8
 }
 
-function Get-Imds {
+function Get-IMDS {
   Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | ConvertTo-Json -Depth 64
 }
 
 function Get-UserData {
-  $imds = Get-Imds | ConvertFrom-Json
+  $imds = Get-IMDS | ConvertFrom-Json
   $base64 = $imds.compute | Select-Object -ExpandProperty "userData"
   ConvertFrom-Base64 -Base64String $base64
 }
@@ -25,7 +24,7 @@ function Get-UserData {
 function Install-AzPowershellModule {
   $AzModule = Get-Module -ListAvailable -Name Az -ErrorAction SilentlyContinue
   if ($null -eq $AzModule) {
-      Write-Host "Installing Az PowerShell Module..."
+      Write-Output "Installing Az PowerShell Module..."
       Install-Module -Name Az -Scope AllUsers -Force
   }
 }
@@ -33,7 +32,7 @@ function Install-AzPowershellModule {
 function Install-AzureCli {
     $AzureCli = Get-Command az -ErrorAction SilentlyContinue
     if ($null -eq $AzureCli) {
-        Write-Host "Installing Azure CLI..."
+        Write-Output "Installing Azure CLI..."
         Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
         Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
         Remove-Item .\AzureCLI.msi
@@ -48,7 +47,7 @@ function Install-Docker {
 function Install-Pwsh {
   $Pwsh = Get-Command pwsh -ErrorAction SilentlyContinue
   if ($null -eq $Pwsh) {
-      Write-Host "Installing PowerShell Core..."
+      Write-Output "Installing PowerShell Core..."
       Invoke-WebRequest -Uri https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/PowerShell-7.4.0-win-x64.msi -OutFile .\PowerShell-7.4.0-win-x64.msi
       Start-Process msiexec.exe -Wait -ArgumentList '/package PowerShell-7.4.0-win-x64.msi /quiet REGISTER_MANIFEST=1 USE_MU=1 ENABLE_MU=1 ADD_PATH=1'
       Remove-Item .\PowerShell-7.4.0-win-x64.msi
@@ -63,12 +62,12 @@ function Install-Terraform {
   $SaveToPath = "C:\ProgramData\Tools"
   $Terraform= Get-Command terraform -ErrorAction SilentlyContinue
   if ($null -eq $Terraform) {
-      Write-Host "Installing Terraform..."
+      Write-Output "Installing Terraform..."
       if ($Version -eq "latest") {
         $releasesUrl = 'https://api.github.com/repos/hashicorp/terraform/releases'
         $releases = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $releasesUrl
         $Version = $releases.Where({!$_.prerelease})[0].name.trim('v')
-        Write-Host "Latest Terraform version is $Version"
+        Write-Output "Latest Terraform version is $Version"
       }
       $terraformFile = "terraform_${Version}_windows_amd64.zip"
       $terraformURL = "https://releases.hashicorp.com/terraform/${Version}/${terraformFile}"
@@ -82,7 +81,7 @@ function Install-Terraform {
 
         Remove-Item -Path "${env:Temp}\${terraformFile}" -Force
 
-        Write-Host "Terraform version $Version installed to $SaveToPath"
+        Write-Output "Terraform version $Version installed to $SaveToPath"
 
         # Save the path to the Terraform executable permanently to the PATH environment variable
         $path = [Environment]::GetEnvironmentVariable('Path','Machine')
@@ -91,7 +90,7 @@ function Install-Terraform {
   }
 }
 
-Get-Imds | Out-File -FilePath "C:\AzureData\IMDS.json"
+Get-IMDS | Out-File -FilePath "C:\AzureData\IMDS.json"
 
 $userData = Get-UserData
 $userData | Out-File -FilePath "C:\AzureData\userData.txt"
@@ -99,7 +98,7 @@ $userData | Out-File -FilePath "C:\AzureData\userData.txt"
 $userDataObj = $userData | ConvertFrom-Json
 
 foreach ($install in $userDataObj.install) {
-  Write-Host "Calling function Install-$($install)..."
+  Write-Output "Calling function Install-$($install)..."
   & "Install-$($install)"
 }
 
