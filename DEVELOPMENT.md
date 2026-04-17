@@ -57,11 +57,28 @@ scripts/test-integration.sh admin_password
 
 # Skip the confirmation prompt (e.g. for CI)
 scripts/test-integration.sh --yes
+
+# Show the full plan + state per run (what Azure actually created)
+scripts/test-integration.sh --verbose
 ```
 
 Requires Azure credentials (`az login` or `ARM_SUBSCRIPTION_ID` plus the
 usual AzureRM env vars). See `tests/integration/README.md` for the list of
 tests and how to clean up resources after a failed run.
+
+What each integration test currently asserts:
+
+| Test                     | Assertions beyond apply/destroy succeeding                                                      |
+|--------------------------|-------------------------------------------------------------------------------------------------|
+| admin_password           | `vmss_id` ends with the expected name; `vmss_name`, `vmss_location`, `vmss_sku` match inputs    |
+| data_disk                | Exactly one data disk on the VMSS and its `disk_size_gb` equals the input                       |
+| identity_user_assigned   | One UAI attached; no SystemAssigned principal; the identity's `client_id` is exposed            |
+
+With `vmss_instances = 0` (the module default) no actual VM instances run,
+so the Azure portal's "Disks" view for a data disk test will be empty while
+the test is applying — the `data_disk` block lives on the VMSS template and
+only materialises when instances scale up. Bump `vmss_instances` locally if
+you want visual confirmation in the portal.
 
 ## GitHub Actions
 
@@ -104,6 +121,16 @@ module "vmss" {
   ]
 }
 ```
+
+A few output shape changes worth noting:
+
+* `output "vmss"` (the whole resource) has been removed. Use the narrower
+  `vmss_id`, `vmss_name`, `vmss_unique_id`, `vmss_location`, `vmss_sku`,
+  `vmss_instances`, `vmss_data_disks`, and `vmss_identity` outputs.
+* `vmss_identity.principal_id` and `vmss_identity.tenant_id` are now `null`
+  when unset (AzureRM returns `""`; the module normalizes this). So checks
+  like `output.vmss_identity.principal_id != null` work as a predicate for
+  "SystemAssigned is enabled".
 
 ## Devcontainer
 
