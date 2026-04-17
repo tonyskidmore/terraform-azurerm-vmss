@@ -110,10 +110,12 @@ if [[ -n "$FILTER" ]]; then
   filter_args+=("-filter=$file")
 fi
 
-# Fresh init at module root (required for `terraform test` to resolve providers
-# when it swaps in module { source = "./examples/..." } during a run).
+# Fresh init that also resolves the example modules referenced by the test
+# files' `module { source = "./examples/..." }` blocks. The `-test-directory`
+# flag (Terraform 1.6+) tells init to install those modules too, otherwise
+# `terraform test` will fail with "Module not installed".
 rm -rf .terraform .terraform.lock.hcl
-terraform init -upgrade -input=false
+terraform init -test-directory="$TEST_DIR" -upgrade -input=false
 
 echo
 echo "==> terraform test -test-directory=$TEST_DIR ${filter_args[*]}"
