@@ -13,31 +13,35 @@ You can learn more about and also create this image yourself by following along 
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.0.0 |
-| azurerm | >=3.1.0 |
-| http | >=3.2.0 |
-| tls | ~>4.0 |
+| terraform | >= 1.10.0 |
+| azurerm | ~> 4.0 |
+| http | ~> 3.4 |
+| tls | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | >=3.1.0 |
-| http | >=3.2.0 |
-| tls | ~>4.0 |
+| azurerm | 4.69.0 |
+| http | 3.5.0 |
+| tls | 4.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+| vmss | ../.. | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| shared\_image\_gallery\_name | Name of the Azure Shared Image Gallery that hosts the custom source image. | `string` | n/a | yes |
+| shared\_image\_gallery\_resource\_group\_name | Resource group of the Azure Shared Image Gallery. | `string` | n/a | yes |
+| shared\_image\_name | Name of the image definition inside the gallery to use as the VMSS source image. | `string` | n/a | yes |
+| shared\_image\_version | Image version to use. Use "latest" to track the newest version, or a specific version like "1.0.0". | `string` | `"latest"` | no |
 | ssh\_port | SSH port number | `number` | `22` | no |
-| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br>  "environment": "test",<br>  "project": "vmss"<br>}</pre> | no |
+| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br/>  "environment": "test",<br/>  "project": "vmss"<br/>}</pre> | no |
 | vmss\_admin\_password | Password associated to vmss\_admin\_username | `string` | `null` | no |
 | vmss\_instances | Number of initial instances in the Virtual Machine Scale Set to create | `number` | n/a | yes |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
@@ -66,10 +70,10 @@ Example
 
 ```hcl
 data "azurerm_shared_image_version" "runner-image" {
-  name                = "latest"
-  image_name          = "ubuntu20"
-  gallery_name        = "acg_01"
-  resource_group_name = "rg-ve-acg-01"
+  name                = var.shared_image_version
+  image_name          = var.shared_image_name
+  gallery_name        = var.shared_image_gallery_name
+  resource_group_name = var.shared_image_gallery_resource_group_name
 }
 
 data "azurerm_resource_group" "vmss" {
@@ -170,8 +174,8 @@ resource "azurerm_subnet_network_security_group_association" "nsg-rule" {
 }
 
 module "vmss" {
-  source                                      = "tonyskidmore/vmss/azurerm"
-  version                                     = "0.4.0"
+  source = "../.."
+
   vmss_name                                   = var.vmss_name
   vmss_resource_group_name                    = var.vmss_resource_group_name
   vmss_subnet_id                              = azurerm_subnet.agents.id

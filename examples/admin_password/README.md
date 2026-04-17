@@ -11,26 +11,26 @@ administrator password as opposed to an SSH key pair
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.0.0 |
-| azurerm | >=3.1.0 |
+| terraform | >= 1.10.0 |
+| azurerm | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.83.0 |
+| azurerm | 4.69.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+| vmss | ../.. | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br>  "environment": "test",<br>  "project": "vmss"<br>}</pre> | no |
+| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br/>  "environment": "test",<br/>  "project": "vmss"<br/>}</pre> | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
 | vmss\_location | Azure location | `string` | n/a | yes |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
@@ -45,16 +45,15 @@ administrator password as opposed to an SSH key pair
 | Name | Description |
 |------|-------------|
 | vmss\_id | Virtual Machine Scale Set ID |
+| vmss\_location | Azure region |
+| vmss\_name | Virtual Machine Scale Set name |
+| vmss\_sku | VM SKU |
 
 
 
 Example
 
 ```hcl
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "vmss" {
   name     = var.vmss_resource_group_name
   location = var.vmss_location
@@ -76,10 +75,10 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.4.0"
+  source = "../.."
+
   vmss_name                = var.vmss_name
-  vmss_resource_group_name = var.vmss_resource_group_name
+  vmss_resource_group_name = azurerm_resource_group.vmss.name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
 }

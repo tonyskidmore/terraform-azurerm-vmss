@@ -22,26 +22,26 @@ _Note:_  Adding tools during instance deployment extends the time it takes an in
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.0.0 |
-| azurerm | >=3.1.0 |
+| terraform | >= 1.10.0 |
+| azurerm | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.83.0 |
+| azurerm | 4.69.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| vmss | tonyskidmore/vmss/azurerm | 0.4.0 |
+| vmss | ../.. | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br>  "environment": "test",<br>  "project": "vmss"<br>}</pre> | no |
+| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br/>  "environment": "test",<br/>  "project": "vmss"<br/>}</pre> | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
 | vmss\_computer\_name\_prefix | The prefix which should be used for the name of the Virtual Machines in this Scale Set | `string` | `null` | no |
 | vmss\_location | Azure location | `string` | n/a | yes |
@@ -68,10 +68,6 @@ _Note:_  Adding tools during instance deployment extends the time it takes an in
 Example
 
 ```hcl
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "vmss" {
   name     = var.vmss_resource_group_name
   location = var.vmss_location
@@ -93,12 +89,12 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  source                    = "tonyskidmore/vmss/azurerm"
-  version                   = "0.4.0"
+  source = "../.."
+
   vmss_os                   = var.vmss_os
   vmss_name                 = var.vmss_name
   vmss_computer_name_prefix = var.vmss_computer_name_prefix
-  vmss_resource_group_name  = var.vmss_resource_group_name
+  vmss_resource_group_name  = azurerm_resource_group.vmss.name
   vmss_subnet_id            = azurerm_subnet.agents.id
   vmss_admin_password       = var.vmss_admin_password
   vmss_se_enabled           = var.vmss_se_enabled

@@ -1,8 +1,7 @@
 # Azure Virtual Machine Scale Set
 
-Example of creating an Azure VMSS with instances configured with an
-administrator password as opposed to an SSH key pair
-(SSH key pair is recommended).
+Example of creating an Azure VMSS with a User Assigned Managed Identity
+attached via the `vmss_identity` input.
 
 <!-- BEGIN_TF_DOCS -->
 
@@ -30,23 +29,25 @@ administrator password as opposed to an SSH key pair
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br/>  "environment": "test",<br/>  "project": "vmss"<br/>}</pre> | no |
-| vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
-| vmss\_data\_disks | Additional data disks | <pre>list(object({<br/>    caching              = string<br/>    create_option        = string<br/>    disk_size_gb         = number<br/>    lun                  = number<br/>    storage_account_type = string<br/>  }))</pre> | `[]` | no |
+| tags | Tags to apply to all resources | `map(string)` | <pre>{<br/>  "environment": "test",<br/>  "example": "identity_user_assigned",<br/>  "project": "vmss"<br/>}</pre> | no |
+| user\_assigned\_identity\_name | Name of the User Assigned Managed Identity to create and attach to the VMSS | `string` | n/a | yes |
+| vmss\_admin\_password | Admin password for the VMSS instances | `string` | n/a | yes |
 | vmss\_location | Azure location | `string` | n/a | yes |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
-| vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
+| vmss\_resource\_group\_name | Resource group name to create for the VMSS | `string` | n/a | yes |
 | vmss\_subnet\_address\_prefixes | Subnet address prefixes | `list(string)` | n/a | yes |
-| vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
-| vmss\_vnet\_address\_space | Vnet network address spaces | `list(string)` | n/a | yes |
-| vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
+| vmss\_subnet\_name | Name of subnet where the VMSS will be connected | `string` | n/a | yes |
+| vmss\_vnet\_address\_space | Virtual network address spaces | `list(string)` | n/a | yes |
+| vmss\_vnet\_name | Name of the virtual network | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vmss\_data\_disks | Data disks configured on the Virtual Machine Scale Set |
-| vmss\_id | Virtual Machine Scale Set ID |
+| user\_assigned\_identity\_client\_id | Client ID of the user-assigned managed identity attached to the VMSS |
+| vmss\_id | Virtual Machine Scale Set resource ID |
+| vmss\_identity | Flattened managed identity details for the VMSS |
+| vmss\_name | Virtual Machine Scale Set name |
 
 
 
@@ -56,6 +57,7 @@ Example
 resource "azurerm_resource_group" "vmss" {
   name     = var.vmss_resource_group_name
   location = var.vmss_location
+  tags     = var.tags
 }
 
 resource "azurerm_virtual_network" "vmss" {
@@ -73,6 +75,13 @@ resource "azurerm_subnet" "agents" {
   virtual_network_name = azurerm_virtual_network.vmss.name
 }
 
+resource "azurerm_user_assigned_identity" "vmss" {
+  name                = var.user_assigned_identity_name
+  resource_group_name = azurerm_resource_group.vmss.name
+  location            = azurerm_resource_group.vmss.location
+  tags                = var.tags
+}
+
 module "vmss" {
   source = "../.."
 
@@ -80,7 +89,13 @@ module "vmss" {
   vmss_resource_group_name = azurerm_resource_group.vmss.name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
-  vmss_data_disks          = var.vmss_data_disks
+
+  vmss_identity = {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.vmss.id]
+  }
+
+  tags = var.tags
 }
 ```
 <!-- END_TF_DOCS -->

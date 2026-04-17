@@ -5,8 +5,12 @@
 #
 # No Azure subscription, credentials, or apply is required for the default
 # validate-only mode. Passing `--with-plan` attempts a plan as well, which
-# requires working Azure credentials for any example that uses data sources
-# (e.g. custom_source_image).
+# requires working Azure credentials.
+#
+# Examples that depend on resources the caller must provision themselves
+# (e.g. a Shared Image Gallery image) are skipped during `--with-plan`.
+# Mark such an example by adding an empty `.skip-plan` file alongside its
+# terraform.tfvars.
 #
 # Usage:
 #   scripts/test-examples.sh              # validate every example (default)
@@ -47,7 +51,9 @@ for example in "$EXAMPLES_DIR"/*/; do
     terraform init -backend=false -upgrade -input=false -no-color >/dev/null
     terraform validate -no-color
     if [[ "$WITH_PLAN" -eq 1 ]]; then
-      if [[ -f terraform.tfvars ]]; then
+      if [[ -f .skip-plan ]]; then
+        echo "Skipping plan for $name — .skip-plan marker present"
+      elif [[ -f terraform.tfvars ]]; then
         terraform plan -refresh=false -input=false -no-color -out=/dev/null
       else
         echo "Skipping plan for $name — no terraform.tfvars present"

@@ -35,8 +35,10 @@ Or run all three via the top-level wrapper:
 scripts/test.sh
 
 # Pass `--with-plan` to also run `terraform plan` against each example.
-# This requires ARM_SUBSCRIPTION_ID or `az login` context for examples that
-# use data sources (e.g. custom_source_image).
+# This requires ARM_SUBSCRIPTION_ID or `az login` context. Examples that
+# depend on caller-provisioned resources (e.g. custom_source_image, which
+# reads from a Shared Image Gallery you must create first) are skipped
+# via a `.skip-plan` marker file in the example directory.
 scripts/test.sh --with-plan
 ```
 

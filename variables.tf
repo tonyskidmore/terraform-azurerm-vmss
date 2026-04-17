@@ -210,10 +210,13 @@ variable "vmss_identity" {
   description = <<-EOT
     Managed Service Identity configuration for the Virtual Machine Scale Set.
 
-    - `type`: one of `SystemAssigned`, `UserAssigned`, or `SystemAssigned, UserAssigned`. When `null` (default), no identity block is created.
+    - `type`: one of `SystemAssigned`, `UserAssigned`, or `SystemAssigned, UserAssigned`. When `type` is `null` (default), no identity block is created.
     - `identity_ids`: list of User Assigned Managed Identity IDs, required when `type` includes `UserAssigned`.
+
+    Pass `{}` (the default) to omit identity. Passing `null` is not supported.
   EOT
   default     = {}
+  nullable    = false
 
   validation {
     condition = (

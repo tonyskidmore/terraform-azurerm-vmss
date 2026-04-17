@@ -1,0 +1,3 @@
+This example depends on a Shared Image Gallery image that the caller must
+provision separately. scripts/test-examples.sh honours this marker to skip
+`terraform plan` for this example during --with-plan runs.
