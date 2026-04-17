@@ -33,4 +33,19 @@ run "apply_data_disk_example" {
     condition     = output.vmss_id != null
     error_message = "Expected vmss_id output to be non-null after apply."
   }
+
+  assert {
+    condition     = length(output.vmss_data_disks) == 1
+    error_message = "Expected exactly one data disk on the VMSS."
+  }
+
+  assert {
+    condition     = one([for d in output.vmss_data_disks : d.disk_size_gb]) == 10
+    error_message = "Expected the data disk to be 10 GB."
+  }
+
+  # Note: with vmss_instances = 0 (module default), no actual VM instances run,
+  # so the Azure portal's "Disks" view will show nothing. The data_disk block
+  # above is on the VMSS template — bump vmss_instances to 1 locally if you
+  # want to verify a real attached disk in the portal.
 }

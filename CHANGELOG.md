@@ -26,10 +26,15 @@ breaking changes — see the "Migrating from 0.4.x" section of the README.
 
 * New `vmss_identity` object input with `optional()` attributes and
   cross-field validation.
-* New outputs: `vmss_name`, `vmss_unique_id`, flat `vmss_identity`
-  (principal_id, tenant_id, user_assigned_identity_ids).
+* New outputs: `vmss_name`, `vmss_unique_id`, `vmss_data_disks`, and a flat
+  `vmss_identity` object (`principal_id`, `tenant_id`,
+  `user_assigned_identity_ids`) with empty-string values from AzureRM
+  normalized to `null` for cleaner consumer checks.
 * New example `examples/identity_user_assigned/` demonstrating the new
   `vmss_identity` input with a user-assigned managed identity.
+* New `tests/integration/*.tftest.hcl` suite that applies and destroys
+  example deployments against a real Azure subscription, driven by the
+  `scripts/test-integration.sh` wrapper.
 * Native `terraform test` suite under `tests/` with plan-only unit tests
   using `mock_provider "azurerm"` — no Azure credentials required.
 * `scripts/test-examples.sh` runs init + validate (optionally plan) across
