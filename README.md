@@ -38,36 +38,48 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the complete list and
 ## Basic example
 
 ```hcl
+terraform {
+  required_version = ">= 1.10.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
 
 resource "azurerm_resource_group" "vmss" {
-  name     = var.vmss_resource_group_name
-  location = var.vmss_location
+  name     = "rg-vmss-example"
+  location = "uksouth"
 }
 
 resource "azurerm_virtual_network" "vmss" {
-  name                = var.vmss_vnet_name
+  name                = "vnet-vmss-example"
   resource_group_name = azurerm_resource_group.vmss.name
-  address_space       = var.vmss_vnet_address_space
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.vmss.location
-  tags                = var.tags
 }
 
 resource "azurerm_subnet" "agents" {
-  name                 = var.vmss_subnet_name
+  name                 = "snet-vmss-agents"
   resource_group_name  = azurerm_resource_group.vmss.name
-  address_prefixes     = var.vmss_subnet_address_prefixes
+  address_prefixes     = ["10.0.1.0/24"]
   virtual_network_name = azurerm_virtual_network.vmss.name
 }
 
 module "vmss" {
-  source = "../.."
+  source  = "tonyskidmore/vmss/azurerm"
+  version = "~> 1.0"
 
-  vmss_name                = var.vmss_name
+  vmss_name                = "vmss-example"
   vmss_resource_group_name = azurerm_resource_group.vmss.name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
 }
-
 ```
 ## Resources
 
