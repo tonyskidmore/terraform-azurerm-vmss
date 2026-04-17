@@ -3,6 +3,27 @@ variable "vmss_name" {
   description = "Name of the Virtual Machine Scale Set to create"
 }
 
+variable "shared_image_gallery_name" {
+  type        = string
+  description = "Name of the Azure Shared Image Gallery that hosts the custom source image."
+}
+
+variable "shared_image_gallery_resource_group_name" {
+  type        = string
+  description = "Resource group of the Azure Shared Image Gallery."
+}
+
+variable "shared_image_name" {
+  type        = string
+  description = "Name of the image definition inside the gallery to use as the VMSS source image."
+}
+
+variable "shared_image_version" {
+  type        = string
+  description = "Image version to use. Use \"latest\" to track the newest version, or a specific version like \"1.0.0\"."
+  default     = "latest"
+}
+
 variable "vmss_admin_password" {
   type        = string
   description = "Password associated to vmss_admin_username"

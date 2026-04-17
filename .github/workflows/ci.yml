@@ -33,7 +33,7 @@ jobs:
 
         # https://github.com/marketplace/actions/super-linter
       - name: Lint Code Base
-        uses: github/super-linter@v5
+        uses: github/super-linter@v7
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,41 +44,34 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list
-          # of changed files within `super-linter`
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.10.5'
+          terraform_wrapper: false
 
       - name: Install Python packages
         run: pip install -r requirements.txt
 
       - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v2
+        uses: terraform-linters/setup-tflint@v4
         with:
           tflint_version: latest
 
-      - name: Install terrascan
-        run: |
-          curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" > terrascan.tar.gz && \
-          tar -xf terrascan.tar.gz terrascan && \
-          rm terrascan.tar.gz && \
-          install terrascan /usr/local/bin && \
-          rm terrascan && \
-          terrascan version
-
-      - name: Patch .pre-commit-config.yaml
-        run: |
-          sed -i '/terraform-docs/,+4d' \
-            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
-          sed -i '/- id: end-of-file-fixer/d' \
-            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.0
+        with:
+          version: latest
 
       - name: Pre-commit check all files
         run: |
@@ -87,3 +80,22 @@ jobs:
           tflint --init
           tflint --version
           pre-commit run --all-files
+
+  terraform-test:
+    name: terraform test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.10.5'
+          terraform_wrapper: false
+
+      - name: Run terraform test (mocked, no Azure credentials needed)
+        run: |
+          terraform init -backend=false
+          terraform test

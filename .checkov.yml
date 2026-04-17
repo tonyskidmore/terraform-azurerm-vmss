@@ -16,7 +16,7 @@ skip-check:
   # "Ensure that Virtual machine scale sets have encryption at host enabled"
   # this has to be enabled on the Azure subscription so not making this mandatory in the module, ref:
   # Use the Azure CLI to enable end-to-end encryption using encryption at host
-  # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
   - CKV_AZURE_97
   # exclude rules triggered on examples
   - CKV_AZURE_182 # "Ensure that VNET has at least 2 connected DNS Endpoints"

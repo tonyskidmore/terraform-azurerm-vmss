@@ -1,7 +1,3 @@
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "vmss" {
   name     = var.vmss_resource_group_name
   location = var.vmss_location
@@ -25,8 +21,8 @@ resource "azurerm_subnet" "agents" {
 module "vmss" {
   for_each = var.vmss_deployments
 
-  source                      = "tonyskidmore/vmss/azurerm"
-  version                     = "0.4.0"
+  source = "../.."
+
   vmss_os                     = each.key
   vmss_name                   = each.value.vmss_name
   vmss_computer_name_prefix   = each.value.vmss_computer_name_prefix

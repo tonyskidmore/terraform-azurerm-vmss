@@ -1,35 +1,23 @@
 output "vmss_id" {
-  value = (
-    var.vmss_os == "linux" ?
-    try(azurerm_linux_virtual_machine_scale_set.ado_pool[0].id, null) :
-    try(azurerm_windows_virtual_machine_scale_set.ado_pool[0].id, null)
-  )
-  description = "Virtual Machine Scale Set ID"
+  value       = try(local.vmss_resource.id, null)
+  description = "Virtual Machine Scale Set resource ID"
 }
 
-output "vmss" {
-  value = (
-    var.vmss_os == "linux" ?
-    try(azurerm_linux_virtual_machine_scale_set.ado_pool[0], null) :
-    try(azurerm_windows_virtual_machine_scale_set.ado_pool[0], null)
-  )
-  description = "Virtual Machine Scale Set object"
+output "vmss_name" {
+  value       = try(local.vmss_resource.name, null)
+  description = "Virtual Machine Scale Set name"
 }
 
-output "vmss_system_assigned_identity_id" {
-  value = (
-    var.vmss_os == "linux" ?
-    try(azurerm_linux_virtual_machine_scale_set.ado_pool[0].identity[0].principal_id, null) :
-    try(azurerm_windows_virtual_machine_scale_set.ado_pool[0].identity[0].principal_id, null)
-  )
-  description = "Virtual Machine Scale Set SystemAssigned Identity"
+output "vmss_unique_id" {
+  value       = try(local.vmss_resource.unique_id, null)
+  description = "The generated unique identifier of the Virtual Machine Scale Set"
 }
 
-output "vmss_user_assigned_identity_ids" {
-  value = (
-    var.vmss_os == "linux" ?
-    try(azurerm_linux_virtual_machine_scale_set.ado_pool[0].identity[0].identity_ids, null) :
-    try(azurerm_windows_virtual_machine_scale_set.ado_pool[0].identity[0].identity_ids, null)
-  )
-  description = "Virtual Machine Scale Set UserAssigned Identities"
+output "vmss_identity" {
+  value = {
+    principal_id               = try(local.vmss_resource.identity[0].principal_id, null)
+    tenant_id                  = try(local.vmss_resource.identity[0].tenant_id, null)
+    user_assigned_identity_ids = try(local.vmss_resource.identity[0].identity_ids, [])
+  }
+  description = "Flattened managed identity details for the Virtual Machine Scale Set"
 }

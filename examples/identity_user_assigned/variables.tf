@@ -5,7 +5,7 @@ variable "vmss_name" {
 
 variable "vmss_resource_group_name" {
   type        = string
-  description = "Existing resource group name of where the VMSS will be created"
+  description = "Resource group name to create for the VMSS"
 }
 
 variable "vmss_location" {
@@ -15,7 +15,7 @@ variable "vmss_location" {
 
 variable "vmss_subnet_name" {
   type        = string
-  description = "Name of subnet where the vmss will be connected"
+  description = "Name of subnet where the VMSS will be connected"
 }
 
 variable "vmss_subnet_address_prefixes" {
@@ -25,36 +25,31 @@ variable "vmss_subnet_address_prefixes" {
 
 variable "vmss_vnet_name" {
   type        = string
-  description = "Name of the Vnet that the target subnet is a member of"
+  description = "Name of the virtual network"
 }
 
 variable "vmss_vnet_address_space" {
   type        = list(string)
-  description = "Vnet network address spaces"
+  description = "Virtual network address spaces"
 }
 
 variable "vmss_admin_password" {
   type        = string
-  description = "Password to allocate to the admin user account"
+  description = "Admin password for the VMSS instances"
+  sensitive   = true
 }
 
-variable "vmss_data_disks" {
-  type = list(object({
-    caching              = string
-    create_option        = string
-    disk_size_gb         = number
-    lun                  = number
-    storage_account_type = string
-  }))
-  description = "Additional data disks"
-  default     = []
+variable "user_assigned_identity_name" {
+  type        = string
+  description = "Name of the User Assigned Managed Identity to create and attach to the VMSS"
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Map of the tags to use for the resources that are deployed"
+  description = "Tags to apply to all resources"
   default = {
     environment = "test"
     project     = "vmss"
+    example     = "identity_user_assigned"
   }
 }

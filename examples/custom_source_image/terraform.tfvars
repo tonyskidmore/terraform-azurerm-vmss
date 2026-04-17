@@ -1,4 +1,11 @@
 vmss_name = "vmss-agent-pool-linux-002"
+
+# Replace the following with the details of the Azure Shared Image Gallery
+# and image definition you want the VMSS instances to be built from.
+shared_image_gallery_name                = "my-acg-01"
+shared_image_gallery_resource_group_name = "rg-my-images-01"
+shared_image_name                        = "ubuntu-22-04"
+shared_image_version                     = "latest"
 # it can be useful during testing to set a password for serial console access
 # but this is not the preferred configuration from a security perspective
 # vmss_admin_password          = "Vm55P@sw0rd123"

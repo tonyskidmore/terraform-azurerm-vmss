@@ -1,5 +1,12 @@
 locals {
 
+  # Helper: references whichever VMSS resource was created (linux or windows) for use in outputs.
+  vmss_resource = (
+    var.vmss_os == "linux" ?
+    try(azurerm_linux_virtual_machine_scale_set.ado_pool[0], null) :
+    try(azurerm_windows_virtual_machine_scale_set.ado_pool[0], null)
+  )
+
   # Linux only - admin_password is required on Windows
   disable_password_authentication = var.vmss_admin_password == null ? true : false
 

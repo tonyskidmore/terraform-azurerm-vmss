@@ -1,0 +1,9 @@
+vmss_name                    = "vmss-uai-demo-001"
+vmss_resource_group_name     = "rg-vmss-identity-demo-001"
+vmss_location                = "uksouth"
+vmss_subnet_name             = "snet-vmss-01"
+vmss_subnet_address_prefixes = ["192.168.0.0/29"]
+vmss_vnet_name               = "vnet-vmss-01"
+vmss_vnet_address_space      = ["192.168.0.0/24"]
+vmss_admin_password          = "Ch@ngeMeB3f0reApply!"
+user_assigned_identity_name  = "id-vmss-uai-demo-001"

@@ -10,6 +10,27 @@ pool in Azure DevOps.
 This module is used by the [terraform-azurerm-vmss-devops-agent](https://registry.terraform.io/modules/tonyskidmore/vmss-devops-agent/azurerm/latest)
 to create the Azure VMSS side of a self-hosted Azure DevOps Scale Set agent pool.
 
+## Requirements
+
+* Terraform `>= 1.10`
+* AzureRM provider `~> 4.0`
+
+## Migrating from 0.4.x to 1.0.0
+
+Version 1.0.0 is a breaking release. Key caller-facing changes:
+
+* Identity inputs `vmss_identity_type` + `vmss_identity_ids` have been replaced
+  by a single object `vmss_identity = { type, identity_ids }`.
+* `vmss_auto_upgrade_minor_version` and `vmss_enable_automatic_updates` are now
+  typed as `bool` (were `string`).
+* `vmss_data_disks[].disk_size_gb` is now typed as `number` (was `string`).
+* `vmss_ssh_public_key` now defaults to `null` (was `""`).
+* The full `vmss` object output has been removed — use the narrower
+  `vmss_id`, `vmss_name`, `vmss_unique_id`, and `vmss_identity` outputs.
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the complete list and
+[`DEVELOPMENT.md`](DEVELOPMENT.md) for a side-by-side migration snippet.
+
 <!-- BEGIN_TF_DOCS -->
 
 

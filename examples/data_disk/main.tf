@@ -1,7 +1,3 @@
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "vmss" {
   name     = var.vmss_resource_group_name
   location = var.vmss_location
@@ -23,10 +19,10 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "vmss" {
-  source                   = "tonyskidmore/vmss/azurerm"
-  version                  = "0.4.0"
+  source = "../.."
+
   vmss_name                = var.vmss_name
-  vmss_resource_group_name = var.vmss_resource_group_name
+  vmss_resource_group_name = azurerm_resource_group.vmss.name
   vmss_subnet_id           = azurerm_subnet.agents.id
   vmss_admin_password      = var.vmss_admin_password
   vmss_data_disks          = var.vmss_data_disks

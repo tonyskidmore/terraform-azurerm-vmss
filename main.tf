@@ -15,12 +15,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   custom_data                     = local.custom_data
   user_data                       = var.vmss_user_data
   zones                           = var.vmss_zones
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
   overprovision = false
   upgrade_mode  = "Manual"
 
   dynamic "admin_ssh_key" {
-    for_each = var.vmss_ssh_public_key == "" ? [] : [1]
+    for_each = var.vmss_ssh_public_key == null ? [] : [1]
     content {
       username   = var.vmss_admin_username
       public_key = var.vmss_ssh_public_key
@@ -49,10 +49,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "ado_pool" {
   }
 
   dynamic "identity" {
-    for_each = var.vmss_identity_type != null ? [1] : []
+    for_each = var.vmss_identity.type != null ? [1] : []
     content {
-      type         = var.vmss_identity_type
-      identity_ids = var.vmss_identity_type == "UserAssigned" || var.vmss_identity_type == "SystemAssigned, UserAssigned" ? var.vmss_identity_ids : null
+      type         = var.vmss_identity.type
+      identity_ids = var.vmss_identity.type == "SystemAssigned" ? null : var.vmss_identity.identity_ids
     }
   }
 
@@ -119,7 +119,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   custom_data                = local.custom_data
   user_data                  = var.vmss_user_data
   zones                      = var.vmss_zones
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops#create-the-scale-set
   overprovision = false
   upgrade_mode  = "Manual"
 
@@ -145,10 +145,10 @@ resource "azurerm_windows_virtual_machine_scale_set" "ado_pool" {
   }
 
   dynamic "identity" {
-    for_each = var.vmss_identity_type != null ? [1] : []
+    for_each = var.vmss_identity.type != null ? [1] : []
     content {
-      type         = var.vmss_identity_type
-      identity_ids = var.vmss_identity_type == "UserAssigned" || var.vmss_identity_type == "SystemAssigned, UserAssigned" ? var.vmss_identity_ids : null
+      type         = var.vmss_identity.type
+      identity_ids = var.vmss_identity.type == "SystemAssigned" ? null : var.vmss_identity.identity_ids
     }
   }
 

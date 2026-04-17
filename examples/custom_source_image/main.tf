@@ -1,8 +1,8 @@
 data "azurerm_shared_image_version" "runner-image" {
-  name                = "latest"
-  image_name          = "ubuntu20"
-  gallery_name        = "acg_01"
-  resource_group_name = "rg-ve-acg-01"
+  name                = var.shared_image_version
+  image_name          = var.shared_image_name
+  gallery_name        = var.shared_image_gallery_name
+  resource_group_name = var.shared_image_gallery_resource_group_name
 }
 
 data "azurerm_resource_group" "vmss" {
@@ -103,8 +103,8 @@ resource "azurerm_subnet_network_security_group_association" "nsg-rule" {
 }
 
 module "vmss" {
-  source                                      = "tonyskidmore/vmss/azurerm"
-  version                                     = "0.4.0"
+  source = "../.."
+
   vmss_name                                   = var.vmss_name
   vmss_resource_group_name                    = var.vmss_resource_group_name
   vmss_subnet_id                              = azurerm_subnet.agents.id

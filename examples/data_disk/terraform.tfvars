@@ -10,7 +10,7 @@ vmss_data_disks = [
   {
     caching              = "None"
     create_option        = "Empty"
-    disk_size_gb         = "10"
+    disk_size_gb         = 10
     lun                  = 1
     storage_account_type = "Standard_LRS"
   }
