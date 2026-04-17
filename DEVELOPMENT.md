@@ -40,6 +40,29 @@ scripts/test.sh
 scripts/test.sh --with-plan
 ```
 
+## Integration tests (real apply/destroy)
+
+Under `tests/integration/` there are opt-in `terraform test` files that use
+`command = apply` to deploy each example against a real Azure subscription,
+assert on the outputs, then let Terraform destroy everything on teardown.
+They are not part of `scripts/test.sh` because they incur cost and take
+several minutes per test.
+
+```bash
+# All integration tests (prompts once for confirmation)
+scripts/test-integration.sh
+
+# Just one example
+scripts/test-integration.sh admin_password
+
+# Skip the confirmation prompt (e.g. for CI)
+scripts/test-integration.sh --yes
+```
+
+Requires Azure credentials (`az login` or `ARM_SUBSCRIPTION_ID` plus the
+usual AzureRM env vars). See `tests/integration/README.md` for the list of
+tests and how to clean up resources after a failed run.
+
 ## GitHub Actions
 
 `.github/workflows/ci.yml` runs the same checks as `scripts/test.sh` on push
