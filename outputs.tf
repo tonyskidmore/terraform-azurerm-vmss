@@ -23,6 +23,11 @@ output "vmss_instances" {
   description = "Number of instances configured on the VMSS"
 }
 
+output "vmss_zones" {
+  value       = try(tolist(local.vmss_resource.zones), [])
+  description = "Availability zones the VMSS instances are spread across"
+}
+
 output "vmss_unique_id" {
   value       = try(local.vmss_resource.unique_id, null)
   description = "The generated unique identifier of the Virtual Machine Scale Set"

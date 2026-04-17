@@ -2,13 +2,13 @@
 
 ## Required tooling
 
-| Tool      | Minimum version | Notes                                                                 |
-|-----------|-----------------|-----------------------------------------------------------------------|
-| Terraform | 1.10            | Needed for `terraform test` with `mock_provider` and ephemeral values |
-| Python    | 3.12            | For the pre-commit toolchain                                          |
-| pre-commit| 4.5             | Pinned in `requirements.txt`                                          |
-| tflint    | latest          | The `azurerm` ruleset is pinned in `.tflint.hcl`                       |
-| Trivy     | latest          | Replaces the deprecated tfsec and the archived terrascan              |
+| Tool       | Minimum version | Notes                                                                 |
+|------------|-----------------|-----------------------------------------------------------------------|
+| Terraform  | 1.10            | Needed for `terraform test` with `mock_provider` and ephemeral values |
+| Python     | 3.12            | For the pre-commit toolchain                                          |
+| pre-commit | 4.5             | Pinned in `requirements.txt`                                          |
+| tflint     | latest          | The `azurerm` ruleset is pinned in `.tflint.hcl`                      |
+| Trivy      | latest          | Replaces the deprecated tfsec and the archived terrascan              |
 
 Provider versions are pinned at the module root in `versions.tf`
 (`azurerm ~> 4.0`). Each example ships its own `versions.tf` and `providers.tf`.
@@ -153,7 +153,7 @@ docker pull ghcr.io/super-linter/super-linter:latest
 
 > Note: `.github/super-linter.env` is shared between local and GitHub Actions scans.
 
-Run locally:
+Run locally (see the [super-linter run-locally docs](https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md)):
 
 ```bash
 docker run \
@@ -163,5 +163,3 @@ docker run \
   -v "$PWD":/tmp/lint \
   ghcr.io/super-linter/super-linter:latest
 ```
-
-[gha-super-linter-local]: https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md

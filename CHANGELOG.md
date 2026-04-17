@@ -26,10 +26,12 @@ breaking changes — see the "Migrating from 0.4.x" section of the README.
 
 * New `vmss_identity` object input with `optional()` attributes and
   cross-field validation.
-* New outputs: `vmss_name`, `vmss_unique_id`, `vmss_data_disks`, and a flat
-  `vmss_identity` object (`principal_id`, `tenant_id`,
-  `user_assigned_identity_ids`) with empty-string values from AzureRM
-  normalized to `null` for cleaner consumer checks.
+* New outputs that reflect server-side state post-apply: `vmss_name`,
+  `vmss_location`, `vmss_sku`, `vmss_instances`, `vmss_zones`,
+  `vmss_unique_id`, `vmss_data_disks`, and a flat `vmss_identity` object
+  (`principal_id`, `tenant_id`, `user_assigned_identity_ids`). Empty-string
+  values from AzureRM are normalized to `null` in `vmss_identity` for
+  cleaner consumer checks.
 * New example `examples/identity_user_assigned/` demonstrating the new
   `vmss_identity` input with a user-assigned managed identity.
 * New `tests/integration/*.tftest.hcl` suite that applies and destroys
