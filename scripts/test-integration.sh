@@ -14,6 +14,7 @@
 #   scripts/test-integration.sh                # run every integration test (prompts)
 #   scripts/test-integration.sh admin_password # run one test
 #   scripts/test-integration.sh --yes          # skip the confirmation prompt
+#   scripts/test-integration.sh --verbose      # show full plan/state per run
 #
 # See tests/integration/README.md for what's covered and how to clean up a
 # failed run.
@@ -24,10 +25,12 @@ REPO_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 cd "$REPO_ROOT"
 
 YES=0
+VERBOSE=0
 FILTER=""
 for arg in "$@"; do
   case "$arg" in
     --yes|-y) YES=1 ;;
+    --verbose|-v) VERBOSE=1 ;;
     -h|--help)
       sed -n '2,19p' "$0"
       exit 0
@@ -117,6 +120,11 @@ fi
 rm -rf .terraform .terraform.lock.hcl
 terraform init -test-directory="$TEST_DIR" -upgrade -input=false
 
+verbose_args=()
+if [[ "$VERBOSE" -eq 1 ]]; then
+  verbose_args+=("-verbose")
+fi
+
 echo
-echo "==> terraform test -test-directory=$TEST_DIR ${filter_args[*]}"
-terraform test -test-directory="$TEST_DIR" "${filter_args[@]}"
+echo "==> terraform test -test-directory=$TEST_DIR ${filter_args[*]} ${verbose_args[*]}"
+terraform test -test-directory="$TEST_DIR" "${filter_args[@]}" "${verbose_args[@]}"

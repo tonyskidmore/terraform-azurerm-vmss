@@ -8,6 +8,21 @@ output "vmss_name" {
   description = "Virtual Machine Scale Set name"
 }
 
+output "vmss_location" {
+  value       = try(local.vmss_resource.location, null)
+  description = "Azure region the VMSS was deployed to"
+}
+
+output "vmss_sku" {
+  value       = try(local.vmss_resource.sku, null)
+  description = "VM SKU in use by the VMSS"
+}
+
+output "vmss_instances" {
+  value       = try(local.vmss_resource.instances, null)
+  description = "Number of instances configured on the VMSS"
+}
+
 output "vmss_unique_id" {
   value       = try(local.vmss_resource.unique_id, null)
   description = "The generated unique identifier of the Virtual Machine Scale Set"
