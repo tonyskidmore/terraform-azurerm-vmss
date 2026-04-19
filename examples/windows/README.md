@@ -62,6 +62,10 @@ _Note:_  Adding tools during instance deployment extends the time it takes an in
 | Name | Description |
 |------|-------------|
 | vmss\_id | Virtual Machine Scale Set ID |
+| vmss\_instances | Number of instances configured on the VMSS |
+| vmss\_location | Azure region |
+| vmss\_name | Virtual Machine Scale Set name |
+| vmss\_sku | VM SKU |
 
 
 

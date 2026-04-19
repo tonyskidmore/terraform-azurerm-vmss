@@ -75,6 +75,7 @@ What each integration test currently asserts:
 | admin_password           | `vmss_id` ends with the expected name; `vmss_name`, `vmss_location`, `vmss_sku` match inputs    |
 | data_disk                | Exactly one data disk on the VMSS and its `disk_size_gb` equals the input                       |
 | identity_user_assigned   | One UAI attached; no SystemAssigned principal; the identity's `client_id` is exposed            |
+| windows                  | `vmss_id` ends with the expected name; `vmss_name`, `vmss_location`, `vmss_sku`, `vmss_instances` match expectations |
 
 With `vmss_instances = 0` (the module default) no actual VM instances run,
 so the Azure portal's "Disks" view for a data disk test will be empty while

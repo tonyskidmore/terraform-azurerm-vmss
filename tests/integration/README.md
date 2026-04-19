@@ -36,11 +36,12 @@ scripts/test-integration.sh --verbose
 | admin_password.tftest.hcl                 | Baseline Linux VMSS creation via the admin_password example |
 | data_disk.tftest.hcl                      | Data disk propagation (number type after the 1.0.0 fix)     |
 | identity_user_assigned.tftest.hcl         | The new `vmss_identity` object with a user-assigned MI      |
+| windows.tftest.hcl                        | Windows VMSS creation via the windows example and CSE wiring |
 
-The `custom_source_image`, `linux-and-windows`, and `windows` examples are not
-yet integration-tested — custom_source_image needs a pre-existing Shared Image
-Gallery, linux-and-windows takes the longest due to multi-deployment
-`for_each`, and windows images pull slow.
+The `custom_source_image` and `linux-and-windows` examples are not yet
+integration-tested — custom_source_image needs a pre-existing Shared Image
+Gallery, and linux-and-windows takes the longest due to multi-deployment
+`for_each`.
 
 ## If a test fails mid-apply
 
